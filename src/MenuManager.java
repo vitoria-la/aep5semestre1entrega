@@ -141,6 +141,16 @@ public class MenuManager {
         return usuario;
     }
 
+
+    /**
+     * Menu simples que pergunta o número do protocolo. Usado por ambas as classes
+     */
+    public void mostrarBuscaProtocolo() {
+        System.out.println("\n");
+        System.out.println("                      Digite o número do protocolo:");
+    }
+
+
     /**
      * Menu da lista das solicitações de um cidadão
      * @param cidadao
@@ -203,7 +213,8 @@ public class MenuManager {
                     System.out.println("Em breve");
                     break;
                 case 3:
-                    System.out.println("Em breve");
+                    mostrarBuscaProtocolo();
+                    Long protocoloBusca = leitor.nextLong();
                     break;
                 case 4:
                     System.out.println("\nObrigado por utilizar o nosso sistema!");
@@ -244,6 +255,40 @@ public class MenuManager {
     }
 
     /**
+     * Menu da da atualização do status das solicitações
+     * @param gestor
+     */
+    public void mostrarAtualizacaoStatus(Gestor gestor) {
+        int opcaoLoop;
+        do {
+            limparConsole();
+            System.out.println("\n");
+            System.out.println("  =====================================================================================");
+            System.out.println("  ObservAcao                                               Transformando Maringa juntos");
+            System.out.println("  E-mail: " + gestor.getEmail());
+            System.out.println("  -------------------------------------------------------------------------------------");
+            System.out.println("");
+            System.out.println("                                    Atualização:\n");
+            // Status provisórios
+            System.out.println("                          1 - Em aberto");
+            System.out.println("                          2 - Emcaminhado ao setor");
+            System.out.println("                          3 - Aprovado");
+            System.out.println("                          4 - Negado");
+            System.out.println("                          5 - Realizado");
+            System.out.println("                          6 - Sair");
+            System.out.print("                            Opcao: ");
+
+            do {
+                opcaoLoop = leitor.nextInt();
+            } while (opcaoLoop > 6 || opcaoLoop < 1);
+
+        } while (opcaoLoop != 6);
+
+        System.out.println("\n   Justificativa ao solicitante:");
+        String justificativa = leitor.next();
+    }
+
+    /**
      * Loop do menu do Funcionario
      */
     public void loopFuncionario(Gestor gestor) {
@@ -271,7 +316,10 @@ public class MenuManager {
                     mostrarSolicitacoesFuncionario(gestor);
                     break;
                 case 2:
-                    System.out.println("Em breve");
+                    mostrarBuscaProtocolo();
+                    Long protocoloBusca = leitor.nextLong();
+                    // Validar existencia da solicitação
+                    mostrarAtualizacaoStatus(gestor);
                     break;
                 case 3:
                     System.out.println("\nObrigado por utilizar o nosso sistema!");
