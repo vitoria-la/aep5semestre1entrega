@@ -142,6 +142,37 @@ public class MenuManager {
     }
 
     /**
+     * Menu da lista das solicitações de um cidadão
+     * @param cidadao
+     */
+    public void mostrarSolicitacoesCidadao(Cidadao cidadao) {
+        limparConsole();
+        System.out.println("\n");
+        System.out.println("  =====================================================================================");
+        System.out.println("  ObservAcao                                               Transformando Maringa juntos");
+        System.out.println("  CPF: " + cidadao.getCpf());
+        System.out.println("  -------------------------------------------------------------------------------------");
+        System.out.println("");
+        System.out.println("                                    Solicitações:\n");
+        // Esse é o modelo das solicitações, não será travado assim, apenas para demonstração
+        System.out.println("     -------------------------------------------------------------------------------");
+        System.out.println("       N° 1234         Poste sem luz na Av. Teste                       12/01/2021");
+        System.out.println("         Iluminação");
+        System.out.println("         Endereço: Avenida Teste, 1234");
+        System.out.println("         Status: Em Aberto");
+        System.out.println("         Atualizado: 12/01/2026");
+        System.out.println("         Assinatura: Fulano");
+        System.out.println("     -------------------------------------------------------------------------------");
+        System.out.println("\n");
+        System.out.print("  Para voltar, digite 1...");
+        int op;
+        do {
+            op = leitor.nextInt();
+        } while (op != 1);
+    }
+
+
+    /**
      * Loop do menu do Cidadao
      */
     public void loopCidadao(Cidadao cidadao) {
@@ -154,15 +185,62 @@ public class MenuManager {
             System.out.println("  CPF: " + cidadao.getCpf());
             System.out.println("  -------------------------------------------------------------------------------------");
             System.out.println("\n");
-            System.out.println("                                    Bem vindo!");
             System.out.println("                        Escolha a opcao que deseja realizar:\n");
             System.out.println("                          1 - Registrar uma ocorrencia");
             System.out.println("                          2 - Listar suas ocorrencias");
             System.out.println("                          3 - Buscar uma ocorrencia sua");
+            System.out.println("                          4 - Sair");
             System.out.print("                            Opcao: ");
-            opcaoLoop = leitor.nextInt();
-        } while (opcao >= 4);
+            do {
+                opcaoLoop = leitor.nextInt();
+            } while (opcaoLoop > 4 || opcaoLoop < 1);
 
+            switch (opcaoLoop) {
+                case 1:
+                    mostrarSolicitacoesCidadao(cidadao);
+                    break;
+                case 2:
+                    System.out.println("Em breve");
+                    break;
+                case 3:
+                    System.out.println("Em breve");
+                    break;
+                case 4:
+                    System.out.println("\nObrigado por utilizar o nosso sistema!");
+                    break;
+            }
+
+        } while (opcaoLoop != 4);
+    }
+
+    /**
+     * Menu da lista das solicitações que aparecem para os funcionarios
+     * @param gestor
+     */
+    public void mostrarSolicitacoesFuncionario(Gestor gestor) {
+        limparConsole();
+        System.out.println("\n");
+        System.out.println("  =====================================================================================");
+        System.out.println("  ObservAcao                                               Transformando Maringa juntos");
+        System.out.println("  E-mail: " + gestor.getEmail());
+        System.out.println("  -------------------------------------------------------------------------------------");
+        System.out.println("");
+        System.out.println("                                    Solicitações:\n");
+        // Esse é o modelo das solicitações, não será travado assim, apenas para demonstração
+        System.out.println("     -------------------------------------------------------------------------------");
+        System.out.println("       N° 1234         Poste sem luz na Av. Teste                       12/01/2021");
+        System.out.println("         Iluminação");
+        System.out.println("         Endereço: Avenida Teste, 1234");
+        System.out.println("         Status: Em Aberto");
+        System.out.println("         Atualizado: 12/01/2026");
+        System.out.println("         Assinatura: Fulano");
+        System.out.println("     -------------------------------------------------------------------------------");
+        System.out.println("\n");
+        System.out.print("  Para voltar, digite 1...");
+        int op;
+        do {
+            op = leitor.nextInt();
+        } while (op != 1);
     }
 
     /**
@@ -178,13 +256,29 @@ public class MenuManager {
             System.out.println("  E-mail: " + gestor.getEmail());
             System.out.println("  -------------------------------------------------------------------------------------");
             System.out.println("\n");
-            System.out.println("                                    Bem vindo!");
             System.out.println("                        Escolha a opcao que deseja realizar:\n");
             System.out.println("                          1 - Listar solicitações");
             System.out.println("                          2 - Atualizar solicitação");
+            System.out.println("                          3 - Sair");
             System.out.print("                            Opcao: ");
-            opcaoLoop = leitor.nextInt();
-        } while (opcao >= 3);
+
+            do {
+                opcaoLoop = leitor.nextInt();
+            } while (opcaoLoop > 3 || opcaoLoop < 1);
+
+            switch (opcaoLoop) {
+                case 1:
+                    mostrarSolicitacoesFuncionario(gestor);
+                    break;
+                case 2:
+                    System.out.println("Em breve");
+                    break;
+                case 3:
+                    System.out.println("\nObrigado por utilizar o nosso sistema!");
+                    break;
+            }
+
+        } while (opcaoLoop != 3);
 
     }
 }
