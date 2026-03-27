@@ -141,7 +141,6 @@ public class MenuManager {
         return usuario;
     }
 
-
     /**
      * Menu simples que pergunta o número do protocolo. Usado por ambas as classes
      */
@@ -149,7 +148,6 @@ public class MenuManager {
         System.out.println("\n");
         System.out.println("                      Digite o número do protocolo:");
     }
-
 
     /**
      * Menu da lista das solicitações de um cidadão
@@ -181,9 +179,87 @@ public class MenuManager {
         } while (op != 1);
     }
 
+    /**
+     * Mostra a solicitação buscada pelo cidadão
+     * @param cidadao
+     */
+    public void mostrarSolicitacaoBuscada(Cidadao cidadao) {
+        limparConsole();
+        System.out.println("\n");
+        System.out.println("  =====================================================================================");
+        System.out.println("  ObservAcao                                               Transformando Maringa juntos");
+        System.out.println("  CPF: " + cidadao.getCpf());
+        System.out.println("  -------------------------------------------------------------------------------------");
+        System.out.println("");
+        // Esse é o modelo das solicitações, não será travado assim, apenas para demonstração
+        System.out.println("     -------------------------------------------------------------------------------");
+        System.out.println("       N° 1234         Poste sem luz na Av. Teste                       12/01/2021");
+        System.out.println("         Iluminação");
+        System.out.println("         Endereço: Avenida Teste, 1234");
+        System.out.println("         Status: Encaminhada ao setor");
+        System.out.println("         Atualizado: 12/01/2026");
+        System.out.println("         Justificativa: A sua solicitação foi enviada ao setor de iluminação;");
+        System.out.println("         Assinatura: Fulano");
+        System.out.println("     -------------------------------------------------------------------------------");
+        System.out.println("\n");
+        System.out.print("  Para voltar, digite 1...");
+        int op;
+        do {
+            op = leitor.nextInt();
+        } while (op != 1);
+    }
+
+    /**
+     * Menu para criar uma solicitação
+     * @param cidadao
+     */
+    public void mostrarCriacaoSolicitacao(Cidadao cidadao) {
+        limparConsole();
+        System.out.println("\n");
+        System.out.println("  =====================================================================================");
+        System.out.println("  ObservAcao                                               Transformando Maringa juntos");
+        System.out.println("  CPF: " + cidadao.getCpf());
+        System.out.println("  -------------------------------------------------------------------------------------");
+        System.out.println("\n");
+        System.out.println("                       Escolha a categoria da sua solicitacao:\n");
+        System.out.println("                          1 - Iluminação");
+        System.out.println("                          2 - Asfalto");
+        System.out.println("                          3 - Grama");
+        System.out.println("                          4 - Pontos de ônibus");
+        System.out.println("                          5 - Outro");
+        System.out.print("                            Opcao: ");
+        int opcaoLoop;
+        do {
+            opcaoLoop = leitor.nextInt();
+        } while (opcaoLoop > 5 || opcaoLoop < 1);
+        System.out.println("");
+        System.out.print("                       Título: ");
+        String titulo = leitor.next();
+        System.out.print("                       Descrição: ");
+        String descricao = leitor.next();
+        System.out.print("                       Localização: ");
+        String local = leitor.next();
+
+        System.out.println("");
+        System.out.println("                             Solicitação criada com sucesso!");
+        // Solicitação recem criada
+        System.out.println("     -------------------------------------------------------------------------------");
+        System.out.println("       N° 1234         Poste sem luz na Av. Teste                       12/01/2021");
+        System.out.println("         Iluminação");
+        System.out.println("         Endereço: Avenida Teste, 1234");
+        System.out.println("         Status: Em aberto");
+        System.out.println("     -------------------------------------------------------------------------------");
+        System.out.println("\n");
+        System.out.print("  Para voltar, digite 1...");
+        int op;
+        do {
+            op = leitor.nextInt();
+        } while (op != 1);
+    }
 
     /**
      * Loop do menu do Cidadao
+     * @param cidadao
      */
     public void loopCidadao(Cidadao cidadao) {
         int opcaoLoop;
@@ -207,14 +283,15 @@ public class MenuManager {
 
             switch (opcaoLoop) {
                 case 1:
-                    mostrarSolicitacoesCidadao(cidadao);
+                    mostrarCriacaoSolicitacao(cidadao);
                     break;
                 case 2:
-                    System.out.println("Em breve");
+                    mostrarSolicitacoesCidadao(cidadao);
                     break;
                 case 3:
                     mostrarBuscaProtocolo();
                     Long protocoloBusca = leitor.nextLong();
+                    mostrarSolicitacaoBuscada(cidadao);
                     break;
                 case 4:
                     System.out.println("\nObrigado por utilizar o nosso sistema!");
@@ -284,7 +361,7 @@ public class MenuManager {
 
         } while (opcaoLoop != 6);
 
-        System.out.println("\n   Justificativa ao solicitante:");
+        System.out.print("\n   Justificativa ao solicitante:");
         String justificativa = leitor.next();
     }
 
