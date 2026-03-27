@@ -1,12 +1,18 @@
 public class Main {
     public static void main(String[] args) {
         MenuManager menuManager = new MenuManager();
-        Usuario user = menuManager.gerenciandoMenusIniciais();
+        int saida = -1;
 
-        if (user instanceof Cidadao) {
-            menuManager.loopCidadao((Cidadao) user);
-        } else {
-            menuManager.loopFuncionario((Gestor) user);
-        }
+        do {
+            Usuario user = menuManager.gerenciandoMenusIniciais();
+
+            if (user instanceof Cidadao) {
+                saida = menuManager.loopCidadao((Cidadao) user);
+            } else {
+                saida = menuManager.loopFuncionario((Gestor) user);
+            }
+        } while (saida == 0);
+
+
     }
 }

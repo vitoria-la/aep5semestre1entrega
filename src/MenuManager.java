@@ -261,14 +261,14 @@ public class MenuManager {
      * Loop do menu do Cidadao
      * @param cidadao
      */
-    public void loopCidadao(Cidadao cidadao) {
+    public int loopCidadao(Cidadao cidadao) {
         int opcaoLoop;
         do {
             limparConsole();
             System.out.println("\n");
             System.out.println("  =====================================================================================");
             System.out.println("  ObservAcao                                               Transformando Maringa juntos");
-            System.out.println("  CPF: " + cidadao.getCpf());
+            System.out.println("  CPF: " + cidadao.getCpf() + "                                        Para trocar de conta, digite 0");
             System.out.println("  -------------------------------------------------------------------------------------");
             System.out.println("\n");
             System.out.println("                        Escolha a opcao que deseja realizar:\n");
@@ -279,7 +279,7 @@ public class MenuManager {
             System.out.print("                            Opcao: ");
             do {
                 opcaoLoop = leitor.nextInt();
-            } while (opcaoLoop > 4 || opcaoLoop < 1);
+            } while (opcaoLoop > 4 || opcaoLoop < 0);
 
             switch (opcaoLoop) {
                 case 1:
@@ -298,7 +298,8 @@ public class MenuManager {
                     break;
             }
 
-        } while (opcaoLoop != 4);
+        } while (opcaoLoop != 4 && opcaoLoop != 0);
+        return opcaoLoop;
     }
 
     /**
@@ -368,14 +369,14 @@ public class MenuManager {
     /**
      * Loop do menu do Funcionario
      */
-    public void loopFuncionario(Gestor gestor) {
+    public int loopFuncionario(Gestor gestor) {
         int opcaoLoop;
         do {
             limparConsole();
             System.out.println("\n");
             System.out.println("  =====================================================================================");
             System.out.println("  ObservAcao                                               Transformando Maringa juntos");
-            System.out.println("  E-mail: " + gestor.getEmail());
+            System.out.println("  E-mail: " + gestor.getEmail() + "                                        Para trocar de conta, digite 0");
             System.out.println("  -------------------------------------------------------------------------------------");
             System.out.println("\n");
             System.out.println("                        Escolha a opcao que deseja realizar:\n");
@@ -386,7 +387,7 @@ public class MenuManager {
 
             do {
                 opcaoLoop = leitor.nextInt();
-            } while (opcaoLoop > 3 || opcaoLoop < 1);
+            } while (opcaoLoop > 3 || opcaoLoop < 0);
 
             switch (opcaoLoop) {
                 case 1:
@@ -403,7 +404,7 @@ public class MenuManager {
                     break;
             }
 
-        } while (opcaoLoop != 3);
-
+        } while (opcaoLoop != 3 && opcaoLoop != 0);
+        return opcaoLoop;
     }
 }
