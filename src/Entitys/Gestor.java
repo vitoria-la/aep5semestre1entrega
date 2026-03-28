@@ -1,3 +1,5 @@
+package Entitys;
+
 public class Gestor extends Usuario {
     // Classe incompleta, feito apenas a parte necessaria pelo menu
     private String email;

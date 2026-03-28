@@ -1,3 +1,7 @@
+import Entitys.Cidadao;
+import Entitys.Gestor;
+import Entitys.Usuario;
+
 import java.util.Scanner;
 
 /**
@@ -258,7 +262,7 @@ public class MenuManager {
     }
 
     /**
-     * Loop do menu do Cidadao
+     * Loop do menu do Entitys.Cidadao
      * @param cidadao
      */
     public int loopCidadao(Cidadao cidadao) {

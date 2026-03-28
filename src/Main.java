@@ -1,3 +1,7 @@
+import Entitys.Cidadao;
+import Entitys.Gestor;
+import Entitys.Usuario;
+
 public class Main {
     public static void main(String[] args) {
         MenuManager menuManager = new MenuManager();
