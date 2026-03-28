@@ -21,13 +21,13 @@ public class MenuManager {
         // Menu para escolher morador ou funcionario
         System.out.println("\n");
         System.out.println("  =====================================================================================");
-        System.out.println("  ObservAcao                                               Transformando Maringa juntos");
+        System.out.println("  ObservAcao                                               Transformando Maringá juntos");
         System.out.println("  -------------------------------------------------------------------------------------");
         System.out.println("\n");
-        System.out.println("	    Para acessar a plataforma, digite o numero de acordo com sua situaçao:       \n");
-        System.out.println("                            1 - Morador de Maringa");
-        System.out.println("                            2 - Funcionario publico\n");
-        System.out.print("                                 Sua escolha: ");
+        System.out.println("	    Para acessar a plataforma, digite o número de acordo com sua situação:       \n");
+        System.out.println("                            1 - Morador de Maringá");
+        System.out.println("                            2 - Funcionário público\n");
+        System.out.print("                                Sua escolha: ");
     }
 
     /**
@@ -37,8 +37,8 @@ public class MenuManager {
         // Menu para realizar o login do cidadao
         System.out.println("\n");
         System.out.println("");
-        System.out.print("                    Digite o seu CPF (sem o ponto entre os digitos):                                   \n");
-        System.out.println("      Ele sera utilizado por voce para acompanhar o progresso de suas ocorrencias\n");
+        System.out.print("                    Digite o seu CPF (sem o ponto entre os dígitos):                                   \n");
+        System.out.println("      Ele será utilizado por você para acompanhar o progresso de suas ocorrências\n");
         System.out.print("                            CPF: ");
         String cpfCidadao = leitor.next();
         Cidadao cidadao = new Cidadao();
@@ -54,7 +54,7 @@ public class MenuManager {
         System.out.println("\n");
         System.out.println("                            1 - Realizar Login");
         System.out.println("                            2 - Realizar cadastro\n");
-        System.out.print("                              Opcao: ");
+        System.out.print("                              Opção: ");
     }
 
     /**
@@ -146,7 +146,7 @@ public class MenuManager {
      */
     public void mostrarBuscaProtocolo() {
         System.out.println("\n");
-        System.out.println("                      Digite o número do protocolo:");
+        System.out.print("                      Digite o número do protocolo:");
     }
 
     /**
@@ -157,7 +157,7 @@ public class MenuManager {
         limparConsole();
         System.out.println("\n");
         System.out.println("  =====================================================================================");
-        System.out.println("  ObservAcao                                               Transformando Maringa juntos");
+        System.out.println("  ObservAcao                                               Transformando Maringá juntos");
         System.out.println("  CPF: " + cidadao.getCpf());
         System.out.println("  -------------------------------------------------------------------------------------");
         System.out.println("");
@@ -172,7 +172,7 @@ public class MenuManager {
         System.out.println("         Assinatura: Fulano");
         System.out.println("     -------------------------------------------------------------------------------");
         System.out.println("\n");
-        System.out.print("  Para voltar, digite 1...");
+        System.out.print("  Para voltar, digite 1:");
         int op;
         do {
             op = leitor.nextInt();
@@ -187,7 +187,7 @@ public class MenuManager {
         limparConsole();
         System.out.println("\n");
         System.out.println("  =====================================================================================");
-        System.out.println("  ObservAcao                                               Transformando Maringa juntos");
+        System.out.println("  ObservAcao                                               Transformando Maringá juntos");
         System.out.println("  CPF: " + cidadao.getCpf());
         System.out.println("  -------------------------------------------------------------------------------------");
         System.out.println("");
@@ -202,7 +202,7 @@ public class MenuManager {
         System.out.println("         Assinatura: Fulano");
         System.out.println("     -------------------------------------------------------------------------------");
         System.out.println("\n");
-        System.out.print("  Para voltar, digite 1...");
+        System.out.print("  Para voltar, digite 1:");
         int op;
         do {
             op = leitor.nextInt();
@@ -217,17 +217,17 @@ public class MenuManager {
         limparConsole();
         System.out.println("\n");
         System.out.println("  =====================================================================================");
-        System.out.println("  ObservAcao                                               Transformando Maringa juntos");
+        System.out.println("  ObservAcao                                               Transformando Maringá juntos");
         System.out.println("  CPF: " + cidadao.getCpf());
         System.out.println("  -------------------------------------------------------------------------------------");
         System.out.println("\n");
-        System.out.println("                       Escolha a categoria da sua solicitacao:\n");
+        System.out.println("                       Escolha a categoria da sua solicitação:\n");
         System.out.println("                          1 - Iluminação");
         System.out.println("                          2 - Asfalto");
         System.out.println("                          3 - Grama");
         System.out.println("                          4 - Pontos de ônibus");
         System.out.println("                          5 - Outro");
-        System.out.print("                            Opcao: ");
+        System.out.print("                          Opção: ");
         int opcaoLoop;
         do {
             opcaoLoop = leitor.nextInt();
@@ -240,7 +240,7 @@ public class MenuManager {
         System.out.print("                       Localização: ");
         String local = leitor.next();
 
-        System.out.println("");
+        System.out.println("\n");
         System.out.println("                             Solicitação criada com sucesso!");
         // Solicitação recem criada
         System.out.println("     -------------------------------------------------------------------------------");
@@ -250,7 +250,7 @@ public class MenuManager {
         System.out.println("         Status: Em aberto");
         System.out.println("     -------------------------------------------------------------------------------");
         System.out.println("\n");
-        System.out.print("  Para voltar, digite 1...");
+        System.out.print("  Para voltar, digite 1:");
         int op;
         do {
             op = leitor.nextInt();
@@ -267,16 +267,17 @@ public class MenuManager {
             limparConsole();
             System.out.println("\n");
             System.out.println("  =====================================================================================");
-            System.out.println("  ObservAcao                                               Transformando Maringa juntos");
-            System.out.println("  CPF: " + cidadao.getCpf() + "                                        Para trocar de conta, digite 0");
+            System.out.println("  ObservAcao                                               Transformando Maringá juntos");
+            // Mostrar o CPF com os pontos
+            System.out.println("  CPF: " + cidadao.getCpf() + "                                    Para trocar de conta, digite 0");
             System.out.println("  -------------------------------------------------------------------------------------");
             System.out.println("\n");
-            System.out.println("                        Escolha a opcao que deseja realizar:\n");
-            System.out.println("                          1 - Registrar uma ocorrencia");
-            System.out.println("                          2 - Listar suas ocorrencias");
-            System.out.println("                          3 - Buscar uma ocorrencia sua");
+            System.out.println("                        Escolha a opção que deseja realizar:\n");
+            System.out.println("                          1 - Registrar uma ocorrência");
+            System.out.println("                          2 - Listar suas ocorrências");
+            System.out.println("                          3 - Buscar uma ocorrência sua");
             System.out.println("                          4 - Sair");
-            System.out.print("                            Opcao: ");
+            System.out.print("                            Opção: ");
             do {
                 opcaoLoop = leitor.nextInt();
             } while (opcaoLoop > 4 || opcaoLoop < 0);
@@ -294,7 +295,7 @@ public class MenuManager {
                     mostrarSolicitacaoBuscada(cidadao);
                     break;
                 case 4:
-                    System.out.println("\nObrigado por utilizar o nosso sistema!");
+                    System.out.println("\n                       Obrigado por utilizar o nosso sistema!");
                     break;
             }
 
@@ -310,7 +311,7 @@ public class MenuManager {
         limparConsole();
         System.out.println("\n");
         System.out.println("  =====================================================================================");
-        System.out.println("  ObservAcao                                               Transformando Maringa juntos");
+        System.out.println("  ObservAcao                                               Transformando Maringá juntos");
         System.out.println("  E-mail: " + gestor.getEmail());
         System.out.println("  -------------------------------------------------------------------------------------");
         System.out.println("");
@@ -325,7 +326,7 @@ public class MenuManager {
         System.out.println("         Assinatura: Fulano");
         System.out.println("     -------------------------------------------------------------------------------");
         System.out.println("\n");
-        System.out.print("  Para voltar, digite 1...");
+        System.out.print("  Para voltar, digite 1:");
         int op;
         do {
             op = leitor.nextInt();
@@ -338,29 +339,27 @@ public class MenuManager {
      */
     public void mostrarAtualizacaoStatus(Gestor gestor) {
         int opcaoLoop;
+        limparConsole();
+        System.out.println("\n");
+        System.out.println("  =====================================================================================");
+        System.out.println("  ObservAcao                                               Transformando Maringá juntos");
+        System.out.println("  E-mail: " + gestor.getEmail());
+        System.out.println("  -------------------------------------------------------------------------------------");
+        System.out.println("");
+        System.out.println("                                    Atualização:\n");
+        // Status provisórios
+        System.out.println("                          1 - Em aberto");
+        System.out.println("                          2 - Emcaminhado ao setor");
+        System.out.println("                          3 - Aprovado");
+        System.out.println("                          4 - Negado");
+        System.out.println("                          5 - Realizado");
+        System.out.println("                          6 - Sair");
+        System.out.print("                            Opção: ");
+
         do {
-            limparConsole();
-            System.out.println("\n");
-            System.out.println("  =====================================================================================");
-            System.out.println("  ObservAcao                                               Transformando Maringa juntos");
-            System.out.println("  E-mail: " + gestor.getEmail());
-            System.out.println("  -------------------------------------------------------------------------------------");
-            System.out.println("");
-            System.out.println("                                    Atualização:\n");
-            // Status provisórios
-            System.out.println("                          1 - Em aberto");
-            System.out.println("                          2 - Emcaminhado ao setor");
-            System.out.println("                          3 - Aprovado");
-            System.out.println("                          4 - Negado");
-            System.out.println("                          5 - Realizado");
-            System.out.println("                          6 - Sair");
-            System.out.print("                            Opcao: ");
-
-            do {
                 opcaoLoop = leitor.nextInt();
-            } while (opcaoLoop > 6 || opcaoLoop < 1);
+        } while (opcaoLoop > 6 || opcaoLoop < 1);
 
-        } while (opcaoLoop != 6);
 
         System.out.print("\n   Justificativa ao solicitante:");
         String justificativa = leitor.next();
@@ -375,15 +374,15 @@ public class MenuManager {
             limparConsole();
             System.out.println("\n");
             System.out.println("  =====================================================================================");
-            System.out.println("  ObservAcao                                               Transformando Maringa juntos");
+            System.out.println("  ObservAcao                                               Transformando Maringá juntos");
             System.out.println("  E-mail: " + gestor.getEmail() + "                                        Para trocar de conta, digite 0");
             System.out.println("  -------------------------------------------------------------------------------------");
             System.out.println("\n");
-            System.out.println("                        Escolha a opcao que deseja realizar:\n");
+            System.out.println("                        Escolha a opção que deseja realizar:\n");
             System.out.println("                          1 - Listar solicitações");
             System.out.println("                          2 - Atualizar solicitação");
             System.out.println("                          3 - Sair");
-            System.out.print("                            Opcao: ");
+            System.out.print("                            Opção: ");
 
             do {
                 opcaoLoop = leitor.nextInt();
@@ -400,7 +399,7 @@ public class MenuManager {
                     mostrarAtualizacaoStatus(gestor);
                     break;
                 case 3:
-                    System.out.println("\nObrigado por utilizar o nosso sistema!");
+                    System.out.println("\n                       Obrigado por utilizar o nosso sistema!");
                     break;
             }
 
