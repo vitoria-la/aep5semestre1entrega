@@ -3,12 +3,17 @@ package Services;
 import Entitys.Ticket;
 import Enums.Prioridade;
 import Enums.StatusTicket;
+import Repositories.Interfaces.ITicketRepository;
 
 import java.time.LocalDateTime;
 
 public class TicketService {
 
+    private ITicketRepository ticketRepository;
 
+    public TicketService (ITicketRepository ticketRepository) {
+        this.ticketRepository = ticketRepository;
+    }
     public Ticket criarTicket(Ticket novoTicket){
 
         novoTicket.setProtocolo(System.currentTimeMillis());
@@ -16,8 +21,13 @@ public class TicketService {
         novoTicket.setStatus(StatusTicket.ABERTO);
         LocalDateTime prazo = calcularPrazoSlA(novoTicket.getPrioridade(), novoTicket.getDataCriacao());
         novoTicket.setPrazoSLA(prazo);
+        ticketRepository.salvar(novoTicket);
 
         return novoTicket;
+    }
+
+    public Ticket buscarTicketCidadao(Long protocolo, int idUsuario) {
+        return ticketRepository.buscarPorProtocoloEUsuario(protocolo, idUsuario);
     }
 
     private LocalDateTime calcularPrazoSlA (Prioridade prioridade, LocalDateTime prazo){

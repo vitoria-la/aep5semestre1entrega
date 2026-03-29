@@ -1,12 +1,16 @@
-import Controllers.CidadaoController;
+import Controllers.TicketController;
+import Controllers.UsuarioController;
 import Entitys.Cidadao;
 import Entitys.Gestor;
 import Entitys.Ticket;
 import Entitys.Usuario;
 import Enums.Categoria;
 import Enums.Prioridade;
+import Repositories.Interfaces.ITicketRepository;
+import Repositories.TicketRepository;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -15,7 +19,9 @@ import java.util.Scanner;
 public class MenuManager {
     private Scanner leitor = new Scanner(System.in);
     private int opcao;
-    private CidadaoController cidadaoController = new CidadaoController();
+    private ITicketRepository ticketRepository = new TicketRepository();
+    private TicketController cidadaoController = new TicketController(ticketRepository);
+    private UsuarioController usuarioController = new UsuarioController();
 
     public void limparConsole() {
         // gambiarra
@@ -52,8 +58,7 @@ public class MenuManager {
         System.out.print("                            CPF: ");
         String cpfCidadao = leitor.next();
         Cidadao cidadao = new Cidadao();
-        cidadao.setCpf(cpfCidadao);
-        return cidadao;
+        return usuarioController.loginCidadao(cpfCidadao);
     }
 
     /**
@@ -171,16 +176,26 @@ public class MenuManager {
         System.out.println("  CPF: " + cidadao.getCpf());
         System.out.println("  -------------------------------------------------------------------------------------");
         System.out.println("");
-        System.out.println("                                    Solicitações:\n");
-        // Esse é o modelo das solicitações, não será travado assim, apenas para demonstração
-        System.out.println("     -------------------------------------------------------------------------------");
-        System.out.println("       N° 1234         Poste sem luz na Av. Teste                       12/01/2021");
-        System.out.println("         Iluminação");
-        System.out.println("         Endereço: Avenida Teste, 1234");
-        System.out.println("         Status: Em Aberto");
-        System.out.println("         Atualizado: 12/01/2026");
-        System.out.println("         Assinatura: Fulano");
-        System.out.println("     -------------------------------------------------------------------------------");
+        System.out.println("                                    Suas Solicitações:\n");
+
+        List<Ticket> chamados = ticketRepository.buscarPorIdUsuario(cidadao.getId());
+
+        if (chamados.isEmpty()) {
+            System.out.println("                   Você ainda não possui nenhuma solicitação registrada.");
+        } else {
+            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            for (Ticket t : chamados) {
+                System.out.println("     -------------------------------------------------------------------------------");
+                System.out.println("       N° " + t.getProtocolo() + "         " + t.getTitulo() + "                       " + t.getDataCriacao().format(formatador));
+                System.out.println("         Categoria: " + t.getCategoria());
+                System.out.println("         Endereço: " + t.getLocalizacaoEndereco() + " - " + t.getBairro());
+                System.out.println("         Status: " + t.getStatus());
+                System.out.println("         Prazo de Resolução: " + t.getPrazoSLA().format(formatador));
+                System.out.println("     -------------------------------------------------------------------------------");
+            }
+        }
+
         System.out.println("\n");
         System.out.print("  Para voltar, digite 1:");
         int op;
@@ -193,7 +208,7 @@ public class MenuManager {
      * Mostra a solicitação buscada pelo cidadão
      * @param cidadao
      */
-    public void mostrarSolicitacaoBuscada(Cidadao cidadao) {
+    public void mostrarSolicitacaoBuscada(Cidadao cidadao, Long protocolo) {
         limparConsole();
         System.out.println("\n");
         System.out.println("  =====================================================================================");
@@ -201,16 +216,27 @@ public class MenuManager {
         System.out.println("  CPF: " + cidadao.getCpf());
         System.out.println("  -------------------------------------------------------------------------------------");
         System.out.println("");
-        // Esse é o modelo das solicitações, não será travado assim, apenas para demonstração
-        System.out.println("     -------------------------------------------------------------------------------");
-        System.out.println("       N° 1234         Poste sem luz na Av. Teste                       12/01/2021");
-        System.out.println("         Iluminação");
-        System.out.println("         Endereço: Avenida Teste, 1234");
-        System.out.println("         Status: Encaminhada ao setor");
-        System.out.println("         Atualizado: 12/01/2026");
-        System.out.println("         Justificativa: A sua solicitação foi enviada ao setor de iluminação;");
-        System.out.println("         Assinatura: Fulano");
-        System.out.println("     -------------------------------------------------------------------------------");
+
+        Ticket ticketEncontrado = cidadaoController.buscarTicketCidadao(protocolo, cidadao.getId());
+
+        if (ticketEncontrado == null) {
+            System.out.println("         Nenhuma solicitação encontrada com este protocolo para o seu usuário.");
+            System.out.println("         Verifique se o número foi digitado corretamente.");
+        } else {
+            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            System.out.println("     -------------------------------------------------------------------------------");
+            System.out.println("       N° " + ticketEncontrado.getProtocolo() + "         " + ticketEncontrado.getTitulo());
+            System.out.println("         Data de Criação: " + ticketEncontrado.getDataCriacao().format(formatador));
+            System.out.println("         Categoria: " + ticketEncontrado.getCategoria());
+            System.out.println("         Prioridade: " + ticketEncontrado.getPrioridade());
+            System.out.println("         Endereço: " + ticketEncontrado.getLocalizacaoEndereco() + " - " + ticketEncontrado.getBairro());
+            System.out.println("         Status: " + ticketEncontrado.getStatus());
+            System.out.println("         Prazo de Resolução (SLA): " + ticketEncontrado.getPrazoSLA().format(formatador));
+            System.out.println("         Descrição: " + ticketEncontrado.getDescricao());
+            System.out.println("     -------------------------------------------------------------------------------");
+        }
+
         System.out.println("\n");
         System.out.print("  Para voltar, digite 1:");
         int op;
@@ -336,7 +362,7 @@ public class MenuManager {
                 case 3:
                     mostrarBuscaProtocolo();
                     Long protocoloBusca = leitor.nextLong();
-                    mostrarSolicitacaoBuscada(cidadao);
+                    mostrarSolicitacaoBuscada(cidadao, protocoloBusca);
                     break;
                 case 4:
                     System.out.println("\n                       Obrigado por utilizar o nosso sistema!");
