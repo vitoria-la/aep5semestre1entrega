@@ -64,13 +64,13 @@ public class MenuManager {
         // Menu para realizar o login do cidadao
         System.out.println("\n");
         System.out.println("");
-        System.out.print("                    Digite o seu CPF (sem o ponto entre os dígitos):                                   \n");
-        System.out.println("      Ele será utilizado por você para acompanhar o progresso de suas ocorrências");
+        System.out.print(BOLD + "                    Digite o seu CPF (sem o ponto entre os dígitos):                                   \n" + RESET);
+        System.out.println(ITALICO + "      Ele será utilizado por você para acompanhar o progresso de suas ocorrências" + RESET);
         System.out.print("                            CPF: ");
         String cpfCidadao = leitor.next();
         if (!VerificaCPF.verificarCPF(cpfCidadao)) {
             do {
-                System.out.println(VERMELHO + "                          CPF inválido, digite novamente" + RESET);
+                System.out.println(VERMELHO + "\n                          CPF inválido, digite novamente" + RESET);
                 System.out.print("                      CPF: ");
                 cpfCidadao = leitor.next();
             } while (!VerificaCPF.verificarCPF(cpfCidadao));
@@ -97,7 +97,7 @@ public class MenuManager {
     public Usuario realizarLoginFuncionario() {
         System.out.println("\n");
         System.out.println("");
-        System.out.println("                                Bem vindo de volta!");
+        System.out.println(BOLD + "                                Bem vindo de volta!" + RESET);
         System.out.println("              Realize seu login com o seu e-mail e senha cadastrados\n");
         System.out.print("                              E-MAIL: ");
         String email = leitor.next();
@@ -118,7 +118,7 @@ public class MenuManager {
     public Usuario realizarCadastroFuncionario() {
         System.out.println("\n");
         System.out.println("");
-        System.out.println("                                      Bem vindo!");
+        System.out.println(BOLD + "                                      Bem vindo!" + RESET);
         System.out.println("                                Realize seu cadastro:\n");
         System.out.print("                      Nome: ");
         String nome = leitor.next();
@@ -126,7 +126,7 @@ public class MenuManager {
         String cpf = leitor.next();
         if (!VerificaCPF.verificarCPF(cpf)) {
             do {
-                System.out.println(VERMELHO + "                          CPF inválido, digite novamente" + RESET);
+                System.out.println(VERMELHO + "\n                          CPF inválido, digite novamente" + RESET);
                 System.out.print("                      CPF: ");
                 cpf = leitor.next();
             } while (!VerificaCPF.verificarCPF(cpf));
@@ -174,7 +174,7 @@ public class MenuManager {
                     }
                     break;
                 default:
-                    System.out.println("Dígito inválido");
+                    System.out.println(VERMELHO + "Dígito inválido" + RESET);
                     break;
             }
         } while (opcao != 1 && opcao != 2);
@@ -202,28 +202,28 @@ public class MenuManager {
         System.out.println("  CPF: " + cidadao.getCpfFormatado());
         System.out.println("  -------------------------------------------------------------------------------------" + RESET);
         System.out.println("");
-        System.out.println("                                    Suas Solicitações:\n");
+        System.out.println(BOLD + "                                    Suas Solicitações:\n" + RESET);
 
         List<Ticket> chamados = ticketRepository.buscarPorIdUsuario(cidadao.getId());
 
         if (chamados.isEmpty()) {
-            System.out.println("                   Você ainda não possui nenhuma solicitação registrada.");
+            System.out.println(VERMELHO + "                   Você ainda não possui nenhuma solicitação registrada." + RESET);
         } else {
             DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
             for (Ticket t : chamados) {
-                System.out.println("     -------------------------------------------------------------------------------");
+                System.out.println(AZUL + "     -------------------------------------------------------------------------------" + RESET);
                 System.out.println("       N° " + t.getProtocolo() + "         " + t.getTitulo() + "                       " + t.getDataCriacao().format(formatador));
                 System.out.println("         Categoria: " + t.getCategoria());
                 System.out.println("         Endereço: " + t.getLocalizacaoEndereco() + " - " + t.getBairro());
                 System.out.println("         Status: " + t.getStatus());
                 System.out.println("         Prazo de Resolução: " + t.getPrazoSLA().format(formatador));
-                System.out.println("     -------------------------------------------------------------------------------");
+                System.out.println(AZUL + "     -------------------------------------------------------------------------------" + RESET);
             }
         }
 
         System.out.println("\n");
-        System.out.print("  Para voltar, digite 1:");
+        System.out.print(ITALICO + "  Para voltar, digite 1:" + RESET);
         int op;
         do {
             op = leitor.nextInt();
@@ -246,12 +246,11 @@ public class MenuManager {
         Ticket ticketEncontrado = cidadaoController.buscarTicketCidadao(protocolo, cidadao.getId());
 
         if (ticketEncontrado == null) {
-            System.out.println("         Nenhuma solicitação encontrada com este protocolo para o seu usuário.");
-            System.out.println("         Verifique se o número foi digitado corretamente.");
+            System.out.println(VERMELHO + "         Nenhuma solicitação encontrada com este protocolo para o seu usuário.");
+            System.out.println("         Verifique se o número foi digitado corretamente." + RESET);
         } else {
             DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-            System.out.println("     -------------------------------------------------------------------------------");
+            System.out.println(AZUL + "     -------------------------------------------------------------------------------" + RESET);
             System.out.println("       N° " + ticketEncontrado.getProtocolo() + "         " + ticketEncontrado.getTitulo());
             System.out.println("         Data de Criação: " + ticketEncontrado.getDataCriacao().format(formatador));
             System.out.println("         Categoria: " + ticketEncontrado.getCategoria());
@@ -260,11 +259,11 @@ public class MenuManager {
             System.out.println("         Status: " + ticketEncontrado.getStatus());
             System.out.println("         Prazo de Resolução (SLA): " + ticketEncontrado.getPrazoSLA().format(formatador));
             System.out.println("         Descrição: " + ticketEncontrado.getDescricao());
-            System.out.println("     -------------------------------------------------------------------------------");
+            System.out.println(AZUL + "     -------------------------------------------------------------------------------" + RESET);
         }
 
         System.out.println("\n");
-        System.out.print("  Para voltar, digite 1:");
+        System.out.print(ITALICO + "  Para voltar, digite 1:" + RESET);
         int op;
         do {
             op = leitor.nextInt();
@@ -283,7 +282,7 @@ public class MenuManager {
         System.out.println("  CPF: " + cidadao.getCpfFormatado());
         System.out.println("  -------------------------------------------------------------------------------------" + RESET);
         System.out.println("\n");
-        System.out.println("                       Escolha a categoria da sua solicitação:\n");
+        System.out.println(BOLD + "                       Escolha a categoria da sua solicitação:" + RESET);
         System.out.println("                          1 - Iluminação");
         System.out.println("                          2 - Asfalto");
         System.out.println("                          3 - Grama");
@@ -297,7 +296,7 @@ public class MenuManager {
 
         leitor.nextLine();
 
-        System.out.println("\n                       Escolha a prioridade da sua solicitação:\n");
+        System.out.println(BOLD + "\n                       Escolha a prioridade da sua solicitação:" + RESET);
         System.out.println("                          1 - Baixa");
         System.out.println("                          2 - Normal");
         System.out.println("                          3 - Alta");
@@ -334,19 +333,19 @@ public class MenuManager {
         if (ticketCriado != null) {
             DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-            System.out.println("\n                             Solicitação criada com sucesso!");
-            System.out.println("     -------------------------------------------------------------------------------");
+            System.out.println(VERDE + "\n\n                             Solicitação criada com sucesso!" + RESET);
+            System.out.println(AZUL + "     -------------------------------------------------------------------------------" + RESET);
             System.out.println("       N° " + ticketCriado.getProtocolo() + "         " + ticketCriado.getTitulo());
             System.out.println("         Categoria: " + ticketCriado.getCategoria());
             System.out.println("         Prioridade: " + ticketCriado.getPrioridade());
             System.out.println("         Endereço: " + ticketCriado.getLocalizacaoEndereco() + " - " + ticketCriado.getBairro());
             System.out.println("         Prazo Limite (SLA): " + ticketCriado.getPrazoSLA().format(formatador));
             System.out.println("         Status: " + ticketCriado.getStatus());
-            System.out.println("     -------------------------------------------------------------------------------");
+            System.out.println(AZUL + "     -------------------------------------------------------------------------------" + RESET);
         }
 
         System.out.println("\n");
-        System.out.print("  Para voltar, digite 1:");
+        System.out.print(ITALICO + "  Para voltar, digite 1:" + RESET);
         int op;
         do {
             op = leitor.nextInt();
@@ -368,7 +367,7 @@ public class MenuManager {
             System.out.println("  CPF: " + cidadao.getCpfFormatado() + "                                     Para trocar de conta, digite 0");
             System.out.println("  -------------------------------------------------------------------------------------" + RESET);
             System.out.println("\n");
-            System.out.println("                        Escolha a opção que deseja realizar:\n");
+            System.out.println(BOLD + "                        Escolha a opção que deseja realizar:\n" + RESET);
             System.out.println("                          1 - Registrar uma ocorrência");
             System.out.println("                          2 - Listar suas ocorrências");
             System.out.println("                          3 - Buscar uma ocorrência sua");
@@ -391,7 +390,7 @@ public class MenuManager {
                     mostrarSolicitacaoBuscada(cidadao, protocoloBusca);
                     break;
                 case 4:
-                    System.out.println("\n                       Obrigado por utilizar o nosso sistema!");
+                    System.out.println(BOLD + "\n                       Obrigado por utilizar o nosso sistema!" + RESET);
                     break;
             }
 
@@ -411,18 +410,18 @@ public class MenuManager {
         System.out.println("  E-mail: " + gestor.getEmail());
         System.out.println("  -------------------------------------------------------------------------------------" + RESET);
         System.out.println("");
-        System.out.println("                                    Solicitações:\n");
+        System.out.println(BOLD + "                                    Solicitações:\n" + RESET);
         // Esse é o modelo das solicitações, não será travado assim, apenas para demonstração
-        System.out.println("     -------------------------------------------------------------------------------");
+        System.out.println(AZUL + "     -------------------------------------------------------------------------------" + RESET);
         System.out.println("       N° 1234         Poste sem luz na Av. Teste                       12/01/2021");
         System.out.println("         Iluminação");
         System.out.println("         Endereço: Avenida Teste, 1234");
         System.out.println("         Status: Em Aberto");
         System.out.println("         Atualizado: 12/01/2026");
         System.out.println("         Assinatura: Fulano");
-        System.out.println("     -------------------------------------------------------------------------------");
+        System.out.println(AZUL + "     -------------------------------------------------------------------------------" + RESET);
         System.out.println("\n");
-        System.out.print("  Para voltar, digite 1:");
+        System.out.print(ITALICO + "  Para voltar, digite 1:" + RESET);
         int op;
         do {
             op = leitor.nextInt();
@@ -442,7 +441,7 @@ public class MenuManager {
         System.out.println("  E-mail: " + gestor.getEmail());
         System.out.println("  -------------------------------------------------------------------------------------" + RESET);
         System.out.println("");
-        System.out.println("                                    Atualização:\n");
+        System.out.println(BOLD + "                                    Atualização:\n" + RESET);
         // Status provisórios
         System.out.println("                          1 - Em aberto");
         System.out.println("                          2 - Emcaminhado ao setor");
@@ -474,7 +473,7 @@ public class MenuManager {
             System.out.println("  E-mail: " + gestor.getEmail() + "                                        Para trocar de conta, digite 0");
             System.out.println("  -------------------------------------------------------------------------------------" + RESET);
             System.out.println("\n");
-            System.out.println("                        Escolha a opção que deseja realizar:\n");
+            System.out.println(BOLD + "                        Escolha a opção que deseja realizar:\n" + RESET);
             System.out.println("                          1 - Listar solicitações");
             System.out.println("                          2 - Atualizar solicitação");
             System.out.println("                          3 - Sair");
@@ -495,7 +494,7 @@ public class MenuManager {
                     mostrarAtualizacaoStatus(gestor);
                     break;
                 case 3:
-                    System.out.println("\n                       Obrigado por utilizar o nosso sistema!");
+                    System.out.println(BOLD + "\n                       Obrigado por utilizar o nosso sistema!" + RESET);
                     break;
             }
 
