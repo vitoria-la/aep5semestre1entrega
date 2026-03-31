@@ -188,7 +188,7 @@ public class MenuManager {
         System.out.println("\n");
         System.out.println("  =====================================================================================");
         System.out.println("  ObservAcao                                               Transformando Maringá juntos");
-        System.out.println("  CPF: " + cidadao.getCpf());
+        System.out.println("  CPF: " + cidadao.getCpfFormatado());
         System.out.println("  -------------------------------------------------------------------------------------");
         System.out.println("");
         System.out.println("                                    Suas Solicitações:\n");
@@ -228,7 +228,7 @@ public class MenuManager {
         System.out.println("\n");
         System.out.println("  =====================================================================================");
         System.out.println("  ObservAcao                                               Transformando Maringá juntos");
-        System.out.println("  CPF: " + cidadao.getCpf());
+        System.out.println("  CPF: " + cidadao.getCpfFormatado());
         System.out.println("  -------------------------------------------------------------------------------------");
         System.out.println("");
 
@@ -269,7 +269,7 @@ public class MenuManager {
         System.out.println("\n");
         System.out.println("  =====================================================================================");
         System.out.println("  ObservAcao                                               Transformando Maringá juntos");
-        System.out.println("  CPF: " + cidadao.getCpf());
+        System.out.println("  CPF: " + cidadao.getCpfFormatado());
         System.out.println("  -------------------------------------------------------------------------------------");
         System.out.println("\n");
         System.out.println("                       Escolha a categoria da sua solicitação:\n");
@@ -354,7 +354,7 @@ public class MenuManager {
             System.out.println("  =====================================================================================");
             System.out.println("  ObservAcao                                               Transformando Maringá juntos");
             // Mostrar o CPF com os pontos
-            System.out.println("  CPF: " + cidadao.getCpf() + "                                    Para trocar de conta, digite 0");
+            System.out.println("  CPF: " + cidadao.getCpfFormatado() + "                                     Para trocar de conta, digite 0");
             System.out.println("  -------------------------------------------------------------------------------------");
             System.out.println("\n");
             System.out.println("                        Escolha a opção que deseja realizar:\n");
