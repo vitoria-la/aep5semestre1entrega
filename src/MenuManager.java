@@ -17,11 +17,21 @@ import java.util.Scanner;
  * Responsavel pelos fluxos dos menus
  */
 public class MenuManager {
-    private Scanner leitor = new Scanner(System.in);
+    private final Scanner leitor = new Scanner(System.in);
     private int opcao;
     private ITicketRepository ticketRepository = new TicketRepository();
     private TicketController cidadaoController = new TicketController(ticketRepository);
     private UsuarioController usuarioController = new UsuarioController();
+
+    // Constantes de cores
+    public static final String AZUL = "\u001B[34m";
+    public static final String VERMELHO = "\u001B[91m";
+    public static final String VERDE = "\u001B[32m";
+
+    // Constantes de estilo
+    public static final String BOLD = "\u001B[1m";
+    public static final String ITALICO = "\u001B[3m";
+    public static final String RESET = "\u001B[0m";
 
     public void limparConsole() {
         // gambiarra
@@ -36,11 +46,12 @@ public class MenuManager {
     public void mostrarOpcaoDeUsuario() {
         // Menu para escolher morador ou funcionario
         System.out.println("\n");
-        System.out.println("  =====================================================================================");
-        System.out.println("  ObservAcao                                               Transformando Maringá juntos");
-        System.out.println("  -------------------------------------------------------------------------------------");
+        System.out.println(AZUL + "  =====================================================================================");
+        System.out.println(BOLD + "  ObservAcao" + RESET + AZUL + "                                               Transformando Maringá juntos");
+        System.out.println("  -------------------------------------------------------------------------------------" + RESET);
         System.out.println("\n");
-        System.out.println("	    Para acessar a plataforma, digite o número de acordo com sua situação:       \n");
+        System.out.println(BOLD + "	    Para acessar a plataforma, digite o número de acordo com sua situação:       \n" + RESET);
+
         System.out.println("                            1 - Morador de Maringá");
         System.out.println("                            2 - Funcionário público\n");
         System.out.print("                                Sua escolha: ");
@@ -54,12 +65,12 @@ public class MenuManager {
         System.out.println("\n");
         System.out.println("");
         System.out.print("                    Digite o seu CPF (sem o ponto entre os dígitos):                                   \n");
-        System.out.println("      Ele será utilizado por você para acompanhar o progresso de suas ocorrências\n");
+        System.out.println("      Ele será utilizado por você para acompanhar o progresso de suas ocorrências");
         System.out.print("                            CPF: ");
         String cpfCidadao = leitor.next();
         if (!VerificaCPF.verificarCPF(cpfCidadao)) {
             do {
-                System.out.println("                          CPF inválido, digite novamente");
+                System.out.println(VERMELHO + "                          CPF inválido, digite novamente" + RESET);
                 System.out.print("                      CPF: ");
                 cpfCidadao = leitor.next();
             } while (!VerificaCPF.verificarCPF(cpfCidadao));
@@ -115,7 +126,7 @@ public class MenuManager {
         String cpf = leitor.next();
         if (!VerificaCPF.verificarCPF(cpf)) {
             do {
-                System.out.println("                          CPF inválido, digite novamente");
+                System.out.println(VERMELHO + "                          CPF inválido, digite novamente" + RESET);
                 System.out.print("                      CPF: ");
                 cpf = leitor.next();
             } while (!VerificaCPF.verificarCPF(cpf));
@@ -186,10 +197,10 @@ public class MenuManager {
     public void mostrarSolicitacoesCidadao(Cidadao cidadao) {
         limparConsole();
         System.out.println("\n");
-        System.out.println("  =====================================================================================");
-        System.out.println("  ObservAcao                                               Transformando Maringá juntos");
+        System.out.println(AZUL + "  =====================================================================================");
+        System.out.println(BOLD + "  ObservAcao" + RESET + AZUL + "                                               Transformando Maringá juntos");
         System.out.println("  CPF: " + cidadao.getCpfFormatado());
-        System.out.println("  -------------------------------------------------------------------------------------");
+        System.out.println("  -------------------------------------------------------------------------------------" + RESET);
         System.out.println("");
         System.out.println("                                    Suas Solicitações:\n");
 
@@ -226,10 +237,10 @@ public class MenuManager {
     public void mostrarSolicitacaoBuscada(Cidadao cidadao, Long protocolo) {
         limparConsole();
         System.out.println("\n");
-        System.out.println("  =====================================================================================");
-        System.out.println("  ObservAcao                                               Transformando Maringá juntos");
+        System.out.println(AZUL + "  =====================================================================================");
+        System.out.println(BOLD + "  ObservAcao" + RESET + AZUL + "                                               Transformando Maringá juntos");
         System.out.println("  CPF: " + cidadao.getCpfFormatado());
-        System.out.println("  -------------------------------------------------------------------------------------");
+        System.out.println("  -------------------------------------------------------------------------------------" + RESET);
         System.out.println("");
 
         Ticket ticketEncontrado = cidadaoController.buscarTicketCidadao(protocolo, cidadao.getId());
@@ -267,10 +278,10 @@ public class MenuManager {
     public void mostrarCriacaoSolicitacao(Cidadao cidadao) {
         limparConsole();
         System.out.println("\n");
-        System.out.println("  =====================================================================================");
-        System.out.println("  ObservAcao                                               Transformando Maringá juntos");
+        System.out.println(AZUL + "  =====================================================================================");
+        System.out.println(BOLD + "  ObservAcao" + RESET + AZUL + "                                               Transformando Maringá juntos");
         System.out.println("  CPF: " + cidadao.getCpfFormatado());
-        System.out.println("  -------------------------------------------------------------------------------------");
+        System.out.println("  -------------------------------------------------------------------------------------" + RESET);
         System.out.println("\n");
         System.out.println("                       Escolha a categoria da sua solicitação:\n");
         System.out.println("                          1 - Iluminação");
@@ -351,11 +362,11 @@ public class MenuManager {
         do {
             limparConsole();
             System.out.println("\n");
-            System.out.println("  =====================================================================================");
-            System.out.println("  ObservAcao                                               Transformando Maringá juntos");
+            System.out.println(AZUL + "  =====================================================================================");
+            System.out.println(BOLD + "  ObservAcao" + RESET + AZUL + "                                               Transformando Maringá juntos");
             // Mostrar o CPF com os pontos
             System.out.println("  CPF: " + cidadao.getCpfFormatado() + "                                     Para trocar de conta, digite 0");
-            System.out.println("  -------------------------------------------------------------------------------------");
+            System.out.println("  -------------------------------------------------------------------------------------" + RESET);
             System.out.println("\n");
             System.out.println("                        Escolha a opção que deseja realizar:\n");
             System.out.println("                          1 - Registrar uma ocorrência");
@@ -395,10 +406,10 @@ public class MenuManager {
     public void mostrarSolicitacoesFuncionario(Gestor gestor) {
         limparConsole();
         System.out.println("\n");
-        System.out.println("  =====================================================================================");
-        System.out.println("  ObservAcao                                               Transformando Maringá juntos");
+        System.out.println(AZUL + "  =====================================================================================");
+        System.out.println(BOLD + "  ObservAcao" + RESET + AZUL + "                                               Transformando Maringá juntos");
         System.out.println("  E-mail: " + gestor.getEmail());
-        System.out.println("  -------------------------------------------------------------------------------------");
+        System.out.println("  -------------------------------------------------------------------------------------" + RESET);
         System.out.println("");
         System.out.println("                                    Solicitações:\n");
         // Esse é o modelo das solicitações, não será travado assim, apenas para demonstração
@@ -426,10 +437,10 @@ public class MenuManager {
         int opcaoLoop;
         limparConsole();
         System.out.println("\n");
-        System.out.println("  =====================================================================================");
-        System.out.println("  ObservAcao                                               Transformando Maringá juntos");
+        System.out.println(AZUL + "  =====================================================================================");
+        System.out.println(BOLD + "  ObservAcao" + RESET + AZUL + "                                               Transformando Maringá juntos");
         System.out.println("  E-mail: " + gestor.getEmail());
-        System.out.println("  -------------------------------------------------------------------------------------");
+        System.out.println("  -------------------------------------------------------------------------------------" + RESET);
         System.out.println("");
         System.out.println("                                    Atualização:\n");
         // Status provisórios
@@ -458,10 +469,10 @@ public class MenuManager {
         do {
             limparConsole();
             System.out.println("\n");
-            System.out.println("  =====================================================================================");
-            System.out.println("  ObservAcao                                               Transformando Maringá juntos");
+            System.out.println(AZUL + "  =====================================================================================");
+            System.out.println(BOLD + "  ObservAcao" + RESET + AZUL + "                                               Transformando Maringá juntos");
             System.out.println("  E-mail: " + gestor.getEmail() + "                                        Para trocar de conta, digite 0");
-            System.out.println("  -------------------------------------------------------------------------------------");
+            System.out.println("  -------------------------------------------------------------------------------------" + RESET);
             System.out.println("\n");
             System.out.println("                        Escolha a opção que deseja realizar:\n");
             System.out.println("                          1 - Listar solicitações");
