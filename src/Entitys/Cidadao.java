@@ -8,7 +8,7 @@ public class Cidadao extends Usuario{
     private List<Ticket> listaDeTickets;
 
     public String getCpfFormatado() {
-        String cpf = super.getCpf();
+        String cpf = super.getCpf(); // 01234567890
         String cpfFormatado = "";
 
         int x = 0;
