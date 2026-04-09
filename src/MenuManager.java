@@ -47,7 +47,7 @@ public class MenuManager {
         // Menu para escolher morador ou funcionario
         System.out.println("\n");
         System.out.println(AZUL + "  =====================================================================================");
-        System.out.println(BOLD + "  ObservAcao" + RESET + AZUL + "                                               Transformando Maringá juntos");
+        System.out.println(BOLD + "  ObservaAção" + RESET + AZUL + "                                              Transformando Maringá juntos");
         System.out.println("  -------------------------------------------------------------------------------------" + RESET);
         System.out.println("\n");
         System.out.println(BOLD + "	    Para acessar a plataforma, digite o número de acordo com sua situação:       \n" + RESET);
@@ -66,14 +66,25 @@ public class MenuManager {
         System.out.println("");
         System.out.print(BOLD + "                    Digite o seu CPF (sem o ponto entre os dígitos):                                   \n" + RESET);
         System.out.println(ITALICO + "      Ele será utilizado por você para acompanhar o progresso de suas ocorrências" + RESET);
+        System.out.println(ITALICO + "                     Caso queira voltar à tela anterior, digite 0" + RESET);
         System.out.print("                            CPF: ");
         String cpfCidadao = leitor.next();
+
+        if (VerificaInputVoltar.verificarStringIgualAZero(cpfCidadao)) {
+            return null;
+        }
+
         if (!VerificaCPF.verificarCPF(cpfCidadao)) {
             do {
                 System.out.println(VERMELHO + "\n                          CPF inválido, digite novamente" + RESET);
                 System.out.print("                      CPF: ");
                 cpfCidadao = leitor.next();
-            } while (!VerificaCPF.verificarCPF(cpfCidadao));
+            } while (!VerificaCPF.verificarCPF(cpfCidadao) && !VerificaInputVoltar.verificarStringIgualAZero(cpfCidadao));
+
+            if (VerificaInputVoltar.verificarStringIgualAZero(cpfCidadao)) {
+                return null;
+            }
+
         }
 
         Cidadao cidadao = new Cidadao();
@@ -87,7 +98,8 @@ public class MenuManager {
         // Menu para o funcionario fazer login ou cadastro
         System.out.println("\n");
         System.out.println("                            1 - Realizar Login");
-        System.out.println("                            2 - Realizar cadastro\n");
+        System.out.println("                            2 - Realizar cadastro");
+        System.out.println("                            0 - Voltar a tela anterior\n");
         System.out.print("                              Opção: ");
     }
 
@@ -98,11 +110,21 @@ public class MenuManager {
         System.out.println("\n");
         System.out.println("");
         System.out.println(BOLD + "                                Bem vindo de volta!" + RESET);
-        System.out.println("              Realize seu login com o seu e-mail e senha cadastrados\n");
+        System.out.println("              Realize seu login com o seu e-mail e senha cadastrados");
+        System.out.println(ITALICO + "                      Para voltar a tela anterior, digite o\n" + RESET);
         System.out.print("                              E-MAIL: ");
         String email = leitor.next();
+
+        if (VerificaInputVoltar.verificarStringIgualAZero(email)) {
+            return null;
+        }
+
         System.out.print("                              SENHA: ");
         String senha = leitor.next();
+
+        if (VerificaInputVoltar.verificarStringIgualAZero(senha)) {
+            return null;
+        }
 
         // Verificar se o login está correto
         // Retornar o funcionario da lista de funcionarios
@@ -120,25 +142,55 @@ public class MenuManager {
         System.out.println("");
         System.out.println(BOLD + "                                      Bem vindo!" + RESET);
         System.out.println("                                Realize seu cadastro:\n");
+        System.out.println(ITALICO + "                        Para voltar a tela anterior, digite o\n" + RESET);
         System.out.print("                      Nome: ");
         String nome = leitor.next();
+
+        if (VerificaInputVoltar.verificarStringIgualAZero(nome)) {
+            return null;
+        }
+
         System.out.print("                      CPF: ");
         String cpf = leitor.next();
+
+        if (VerificaInputVoltar.verificarStringIgualAZero(cpf)) {
+            return null;
+        }
+
         if (!VerificaCPF.verificarCPF(cpf)) {
             do {
                 System.out.println(VERMELHO + "\n                          CPF inválido, digite novamente" + RESET);
                 System.out.print("                      CPF: ");
                 cpf = leitor.next();
-            } while (!VerificaCPF.verificarCPF(cpf));
+            } while (!VerificaCPF.verificarCPF(cpf) && !VerificaInputVoltar.verificarStringIgualAZero(cpf));
         }
         System.out.print("                      Cargo: ");
         String cargo = leitor.next();
+
+        if (VerificaInputVoltar.verificarStringIgualAZero(cargo)) {
+            return null;
+        }
+
         System.out.print("                      E-mail: ");
         String email = leitor.next();
+
+        if (VerificaInputVoltar.verificarStringIgualAZero(email)) {
+            return null;
+        }
+
         System.out.print("                      Senha: ");
         String senha = leitor.next();
+
+        if (VerificaInputVoltar.verificarStringIgualAZero(senha)) {
+            return null;
+        }
+
         System.out.print("                      Digite novamente sua senha: ");
         String confSenha = leitor.next();
+
+        if (VerificaInputVoltar.verificarStringIgualAZero(confSenha)) {
+            return null;
+        }
 
         // PROVISÓRIO
         Gestor funcionario = new Gestor();
@@ -149,37 +201,63 @@ public class MenuManager {
      * Gerenciador dos menus iniciais (antes do login do usuario)
      */
     public Usuario gerenciandoMenusIniciais() {
-        mostrarOpcaoDeUsuario();
+        boolean voltarTelaOpcaoUsuario = false;
         Usuario usuario = new Usuario();
+
         do {
-            opcao = leitor.nextInt();
-            switch (opcao) {
-                case 1:
-                    // Se for um cidadao
-                    usuario = mostrarLoginCidadao();
-                    break;
-                case 2:
-                    // Se for um funcionario
-                    mostrarOpcoesGestor();
-                    int opcaoFuncionario = leitor.nextInt();
-                    switch (opcaoFuncionario) {
-                        case 1:
-                            // Se for realizar login
-                            usuario = realizarLoginFuncionario();
-                            break;
-                        case 2:
-                            // Se for realizar cadastro
-                            usuario = realizarCadastroFuncionario();
-                            break;
-                    }
-                    break;
-                default:
-                    System.out.println(VERMELHO + "Dígito inválido" + RESET);
-                    break;
-            }
-        } while (opcao != 1 && opcao != 2);
+            mostrarOpcaoDeUsuario();
+            voltarTelaOpcaoUsuario = false;
+
+            do {
+                opcao = leitor.nextInt();
+                switch (opcao) {
+                    case 1:
+                        // Se for um cidadao
+                        usuario = mostrarLoginCidadao();
+
+                        if (usuario == null) {
+                            voltarTelaOpcaoUsuario = true;
+                        }
+
+                        break;
+                    case 2:
+                        // Se for um funcionario
+                        boolean voltarTelaOpcaoGestor = false;
+
+                        do {
+                            mostrarOpcoesGestor();
+                            voltarTelaOpcaoGestor = false;
+                            int opcaoFuncionario = leitor.nextInt();
+
+                            if (opcaoFuncionario == 0) {
+                                voltarTelaOpcaoUsuario = true;
+                            } else {
+                                switch (opcaoFuncionario) {
+                                    case 1:
+                                        // Se for realizar login
+                                        usuario = realizarLoginFuncionario();
+                                        break;
+                                    case 2:
+                                        // Se for realizar cadastro
+                                        usuario = realizarCadastroFuncionario();
+                                        break;
+                                }
+                                if (usuario == null) {
+                                    voltarTelaOpcaoGestor = true;
+                                }
+                            }
+                        } while (voltarTelaOpcaoGestor);
+
+                        break;
+                    default:
+                        System.out.println(VERMELHO + "Dígito inválido" + RESET);
+                        break;
+                }
+            } while (opcao != 1 && opcao != 2);
+        } while (voltarTelaOpcaoUsuario);
 
         return usuario;
+
     }
 
     /**
@@ -187,7 +265,9 @@ public class MenuManager {
      */
     public void mostrarBuscaProtocolo() {
         System.out.println("\n");
-        System.out.print("                      Digite o número do protocolo:");
+        System.out.println("                      Digite o número do protocolo:");
+        System.out.println(ITALICO + "                  Para voltar a tela anterior, digite 0" + RESET);
+        System.out.print("                       ");
     }
 
     /**
@@ -198,7 +278,7 @@ public class MenuManager {
         limparConsole();
         System.out.println("\n");
         System.out.println(AZUL + "  =====================================================================================");
-        System.out.println(BOLD + "  ObservAcao" + RESET + AZUL + "                                               Transformando Maringá juntos");
+        System.out.println(BOLD + "  ObservaAção" + RESET + AZUL + "                                              Transformando Maringá juntos");
         System.out.println("  CPF: " + cidadao.getCpfFormatado());
         System.out.println("  -------------------------------------------------------------------------------------" + RESET);
         System.out.println("");
@@ -223,11 +303,11 @@ public class MenuManager {
         }
 
         System.out.println("\n");
-        System.out.print(ITALICO + "  Para voltar, digite 1:" + RESET);
+        System.out.print(ITALICO + "  Para voltar, digite 0" + RESET);
         int op;
         do {
             op = leitor.nextInt();
-        } while (op != 1);
+        } while (op != 0);
     }
 
     /**
@@ -238,7 +318,7 @@ public class MenuManager {
         limparConsole();
         System.out.println("\n");
         System.out.println(AZUL + "  =====================================================================================");
-        System.out.println(BOLD + "  ObservAcao" + RESET + AZUL + "                                               Transformando Maringá juntos");
+        System.out.println(BOLD + "  ObservaAção" + RESET + AZUL + "                                              Transformando Maringá juntos");
         System.out.println("  CPF: " + cidadao.getCpfFormatado());
         System.out.println("  -------------------------------------------------------------------------------------" + RESET);
         System.out.println("");
@@ -263,11 +343,11 @@ public class MenuManager {
         }
 
         System.out.println("\n");
-        System.out.print(ITALICO + "  Para voltar, digite 1:" + RESET);
+        System.out.print(ITALICO + "  Para voltar, digite 0" + RESET);
         int op;
         do {
             op = leitor.nextInt();
-        } while (op != 1);
+        } while (op != 0);
     }
 
     /**
@@ -278,7 +358,7 @@ public class MenuManager {
         limparConsole();
         System.out.println("\n");
         System.out.println(AZUL + "  =====================================================================================");
-        System.out.println(BOLD + "  ObservAcao" + RESET + AZUL + "                                               Transformando Maringá juntos");
+        System.out.println(BOLD + "  ObservaAção" + RESET + AZUL + "                                              Transformando Maringá juntos");
         System.out.println("  CPF: " + cidadao.getCpfFormatado());
         System.out.println("  -------------------------------------------------------------------------------------" + RESET);
         System.out.println("\n");
@@ -288,11 +368,16 @@ public class MenuManager {
         System.out.println("                          3 - Grama");
         System.out.println("                          4 - Pontos de ônibus");
         System.out.println("                          5 - Outro");
+        System.out.println("                          0 - Voltar a tela anterior");
         System.out.print("                          Opção: ");
         int opcaoCategoria;
         do {
             opcaoCategoria = leitor.nextInt();
-        } while (opcaoCategoria > 5 || opcaoCategoria < 1);
+        } while (opcaoCategoria > 5 || opcaoCategoria < 0);
+
+        if (opcaoCategoria == 0) {
+            return;
+        }
 
         leitor.nextLine();
 
@@ -345,11 +430,11 @@ public class MenuManager {
         }
 
         System.out.println("\n");
-        System.out.print(ITALICO + "  Para voltar, digite 1:" + RESET);
+        System.out.print(ITALICO + "  Para voltar, digite 0" + RESET);
         int op;
         do {
             op = leitor.nextInt();
-        } while (op != 1);
+        } while (op != 0);
     }
 
     /**
@@ -358,11 +443,13 @@ public class MenuManager {
      */
     public int loopCidadao(Cidadao cidadao) {
         int opcaoLoop;
+        boolean voltarLoopCidadao = false;
         do {
+            voltarLoopCidadao = false;
             limparConsole();
             System.out.println("\n");
             System.out.println(AZUL + "  =====================================================================================");
-            System.out.println(BOLD + "  ObservAcao" + RESET + AZUL + "                                               Transformando Maringá juntos");
+            System.out.println(BOLD + "  ObservaAção" + RESET + AZUL + "                                              Transformando Maringá juntos");
             // Mostrar o CPF com os pontos
             System.out.println("  CPF: " + cidadao.getCpfFormatado() + "                                     Para trocar de conta, digite 0");
             System.out.println("  -------------------------------------------------------------------------------------" + RESET);
@@ -387,14 +474,20 @@ public class MenuManager {
                 case 3:
                     mostrarBuscaProtocolo();
                     Long protocoloBusca = leitor.nextLong();
-                    mostrarSolicitacaoBuscada(cidadao, protocoloBusca);
+
+                    if (protocoloBusca == 0) {
+                        voltarLoopCidadao = true;
+                    } else {
+                        mostrarSolicitacaoBuscada(cidadao, protocoloBusca);
+                    }
+
                     break;
                 case 4:
                     System.out.println(BOLD + "\n                       Obrigado por utilizar o nosso sistema!" + RESET);
                     break;
             }
 
-        } while (opcaoLoop != 4 && opcaoLoop != 0);
+        } while (opcaoLoop != 4 && opcaoLoop != 0 || voltarLoopCidadao);
         return opcaoLoop;
     }
 
@@ -406,7 +499,7 @@ public class MenuManager {
         limparConsole();
         System.out.println("\n");
         System.out.println(AZUL + "  =====================================================================================");
-        System.out.println(BOLD + "  ObservAcao" + RESET + AZUL + "                                               Transformando Maringá juntos");
+        System.out.println(BOLD + "  ObservaAção" + RESET + AZUL + "                                              Transformando Maringá juntos");
         System.out.println("  E-mail: " + gestor.getEmail());
         System.out.println("  -------------------------------------------------------------------------------------" + RESET);
         System.out.println("");
@@ -421,43 +514,58 @@ public class MenuManager {
         System.out.println("         Assinatura: Fulano");
         System.out.println(AZUL + "     -------------------------------------------------------------------------------" + RESET);
         System.out.println("\n");
-        System.out.print(ITALICO + "  Para voltar, digite 1:" + RESET);
+        System.out.print(ITALICO + "  Para voltar, digite 0" + RESET);
         int op;
         do {
             op = leitor.nextInt();
-        } while (op != 1);
+        } while (op != 0);
     }
 
     /**
      * Menu da da atualização do status das solicitações
      * @param gestor
      */
-    public void mostrarAtualizacaoStatus(Gestor gestor) {
-        int opcaoLoop;
-        limparConsole();
-        System.out.println("\n");
-        System.out.println(AZUL + "  =====================================================================================");
-        System.out.println(BOLD + "  ObservAcao" + RESET + AZUL + "                                               Transformando Maringá juntos");
-        System.out.println("  E-mail: " + gestor.getEmail());
-        System.out.println("  -------------------------------------------------------------------------------------" + RESET);
-        System.out.println("");
-        System.out.println(BOLD + "                                    Atualização:\n" + RESET);
-        // Status provisórios
-        System.out.println("                          1 - Em aberto");
-        System.out.println("                          2 - Emcaminhado ao setor");
-        System.out.println("                          3 - Aprovado");
-        System.out.println("                          4 - Negado");
-        System.out.println("                          5 - Realizado");
-        System.out.println("                          6 - Sair");
-        System.out.print("                            Opção: ");
+    public boolean mostrarAtualizacaoStatus(Gestor gestor) {
+        boolean voltarMenuAtualizacaoStatus = false;
 
         do {
+            voltarMenuAtualizacaoStatus = false;
+            int opcaoLoop;
+            limparConsole();
+            System.out.println("\n");
+            System.out.println(AZUL + "  =====================================================================================");
+            System.out.println(BOLD + "  ObservaAção" + RESET + AZUL + "                                              Transformando Maringá juntos");
+            System.out.println("  E-mail: " + gestor.getEmail());
+            System.out.println("  -------------------------------------------------------------------------------------" + RESET);
+            System.out.println("");
+            System.out.println(BOLD + "                                    Atualização:\n" + RESET);
+            // Status provisórios
+            System.out.println("                          1 - Em aberto");
+            System.out.println("                          2 - Emcaminhado ao setor");
+            System.out.println("                          3 - Aprovado");
+            System.out.println("                          4 - Negado");
+            System.out.println("                          5 - Realizado");
+            System.out.println("                          0 - Voltar");
+            System.out.print("                            Opção: ");
+
+            do {
                 opcaoLoop = leitor.nextInt();
-        } while (opcaoLoop > 6 || opcaoLoop < 1);
+            } while (opcaoLoop > 5 || opcaoLoop < 0);
 
+            if (opcaoLoop == 0) {
+                return false;
+            }
 
-        System.out.print("\n   Justificativa ao solicitante:");
-        String justificativa = leitor.next();
+            System.out.print("\n   Justificativa ao solicitante (0 para voltar):");
+            String justificativa = leitor.next();
+
+            if (VerificaInputVoltar.verificarStringIgualAZero(justificativa)) {
+                voltarMenuAtualizacaoStatus = true;
+            }
+
+        } while (voltarMenuAtualizacaoStatus);
+
+        return true;
     }
 
     /**
@@ -465,11 +573,14 @@ public class MenuManager {
      */
     public int loopFuncionario(Gestor gestor) {
         int opcaoLoop;
+        boolean voltarLoopFuncionario = false;
         do {
             limparConsole();
+            voltarLoopFuncionario = false;
+
             System.out.println("\n");
             System.out.println(AZUL + "  =====================================================================================");
-            System.out.println(BOLD + "  ObservAcao" + RESET + AZUL + "                                               Transformando Maringá juntos");
+            System.out.println(BOLD + "  ObservaAção" + RESET + AZUL + "                                              Transformando Maringá juntos");
             System.out.println("  E-mail: " + gestor.getEmail() + "                                        Para trocar de conta, digite 0");
             System.out.println("  -------------------------------------------------------------------------------------" + RESET);
             System.out.println("\n");
@@ -488,17 +599,33 @@ public class MenuManager {
                     mostrarSolicitacoesFuncionario(gestor);
                     break;
                 case 2:
-                    mostrarBuscaProtocolo();
-                    Long protocoloBusca = leitor.nextLong();
-                    // Validar existencia da solicitação
-                    mostrarAtualizacaoStatus(gestor);
+                    boolean voltarMenuBuscaProtocolo = false;
+
+                    do {
+                        voltarMenuBuscaProtocolo = false;
+                        mostrarBuscaProtocolo();
+                        Long protocoloBusca = leitor.nextLong();
+                        
+                        if (protocoloBusca == 0) {
+                            voltarLoopFuncionario = true;
+                        }  else {
+                            // Validar existencia da solicitação
+                            boolean resultadoAtualizacao = mostrarAtualizacaoStatus(gestor);
+
+                            if (!resultadoAtualizacao) {
+                                voltarMenuBuscaProtocolo = true;
+                            }
+
+                        }
+                    } while (voltarMenuBuscaProtocolo);
+
                     break;
                 case 3:
                     System.out.println(BOLD + "\n                       Obrigado por utilizar o nosso sistema!" + RESET);
                     break;
             }
 
-        } while (opcaoLoop != 3 && opcaoLoop != 0);
+        } while (opcaoLoop != 3 && opcaoLoop != 0 || voltarLoopFuncionario);
         return opcaoLoop;
     }
 }
