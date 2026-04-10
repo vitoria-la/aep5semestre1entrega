@@ -605,7 +605,7 @@ public class MenuManager {
                         voltarMenuBuscaProtocolo = false;
                         mostrarBuscaProtocolo();
                         Long protocoloBusca = leitor.nextLong();
-                        
+
                         if (protocoloBusca == 0) {
                             voltarLoopFuncionario = true;
                         }  else {

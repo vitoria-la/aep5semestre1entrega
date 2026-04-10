@@ -18,7 +18,6 @@ public abstract class VerificaCPF {
         }
 
         /*
-        145.382.206-20
         14538220620
 
         1	4	5	3	8	2	2	0	6
@@ -27,22 +26,22 @@ public abstract class VerificaCPF {
         10	36	40	21	48	10	8	0	12
          */
 
-        int y = 10;
+        int multiplicador = 10;
         int soma = 0;
         for (int x = 0; x < 9; x++) {
-            soma += numerosCpf[x]*y;
-            y--;
+            soma += numerosCpf[x]* multiplicador;
+            multiplicador--;
         }
 
-        int resto = soma%11;
+        int resto;
 
         resto = soma%11;
-        int primDigitoVer = 11 - resto;
-        if (primDigitoVer >= 10) {
-            primDigitoVer = 0;
+        int primeiroDigitoVerificador = 11 - resto;
+        if (primeiroDigitoVerificador >= 10) {
+            primeiroDigitoVerificador = 0;
         }
 
-        if (numerosCpf[9] != primDigitoVer) {
+        if (numerosCpf[9] != primeiroDigitoVerificador) {
             return false;
         }
 
@@ -53,20 +52,20 @@ public abstract class VerificaCPF {
         11	40	45	24	56	12	10	0	18	4
          */
 
-        y = 11;
+        multiplicador = 11;
         soma = 0;
         for (int x = 0; x < 10; x++) {
-            soma += numerosCpf[x]*y;
-            y--;
+            soma += numerosCpf[x]* multiplicador;
+            multiplicador--;
         }
 
         resto = soma%11;
-        int segDigitoVer = 11 - resto;
-        if (segDigitoVer >= 10) {
-            segDigitoVer = 0;
+        int segundoDigitoVerificador = 11 - resto;
+        if (segundoDigitoVerificador >= 10) {
+            segundoDigitoVerificador = 0;
         }
 
-        if (numerosCpf[10] != segDigitoVer) {
+        if (numerosCpf[10] != segundoDigitoVerificador) {
             return false;
         }
 
