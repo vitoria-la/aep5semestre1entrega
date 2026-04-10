@@ -6,6 +6,7 @@ import Entitys.Ticket;
 import Entitys.Usuario;
 import Enums.Categoria;
 import Enums.Prioridade;
+import Enums.StatusTicket;
 import Repositories.Interfaces.ITicketRepository;
 import Repositories.TicketRepository;
 
@@ -44,7 +45,6 @@ public class MenuManager {
      * Primeiro menu (escolher se é cidadao ou funcionario)
      */
     public void mostrarOpcaoDeUsuario() {
-        // Menu para escolher morador ou funcionario
         System.out.println("\n");
         System.out.println(AZUL + "  =====================================================================================");
         System.out.println(BOLD + "  ObservaAção" + RESET + AZUL + "                                              Transformando Maringá juntos");
@@ -53,7 +53,8 @@ public class MenuManager {
         System.out.println(BOLD + "	    Para acessar a plataforma, digite o número de acordo com sua situação:       \n" + RESET);
 
         System.out.println("                            1 - Morador de Maringá");
-        System.out.println("                            2 - Funcionário público\n");
+        System.out.println("                            2 - Funcionário público");
+        System.out.println("                            0 - Sair do programa\n");
         System.out.print("                                Sua escolha: ");
     }
 
@@ -129,8 +130,11 @@ public class MenuManager {
         // Verificar se o login está correto
         // Retornar o funcionario da lista de funcionarios
 
-        // PROVISÓRIO
-        Gestor funcionario = new Gestor();
+        Gestor funcionario = usuarioController.loginGestor(email, senha);
+
+        if (funcionario != null) {
+            System.out.println(VERDE + "\nLogin realizado com sucesso! Bem-vindo(a), " + funcionario.getNome() + "." + RESET);
+        }
         return funcionario;
     }
 
@@ -192,9 +196,14 @@ public class MenuManager {
             return null;
         }
 
-        // PROVISÓRIO
-        Gestor funcionario = new Gestor();
-        return funcionario;
+        Gestor funcionario = usuarioController.cadastrarGestor(nome, cpf, cargo, email, senha, confSenha);
+
+        if (funcionario != null) {
+            System.out.println(VERDE + "\nCadastro realizado com sucesso! Você já pode fazer login." + RESET);
+            return null;
+        }
+
+        return null;
     }
 
     /**
@@ -202,62 +211,56 @@ public class MenuManager {
      */
     public Usuario gerenciandoMenusIniciais() {
         boolean voltarTelaOpcaoUsuario = false;
-        Usuario usuario = new Usuario();
+        Usuario usuario = null;
 
         do {
             mostrarOpcaoDeUsuario();
             voltarTelaOpcaoUsuario = false;
+            opcao = leitor.nextInt();
 
-            do {
-                opcao = leitor.nextInt();
-                switch (opcao) {
-                    case 1:
-                        // Se for um cidadao
-                        usuario = mostrarLoginCidadao();
+            switch (opcao) {
+                case 0:
+                    return null;
+                case 1:
+                    usuario = mostrarLoginCidadao();
+                    if (usuario == null) voltarTelaOpcaoUsuario = true;
+                    break;
+                case 2:
+                    boolean voltarTelaOpcaoGestor = false;
+                    do {
+                        mostrarOpcoesGestor();
+                        voltarTelaOpcaoGestor = false;
+                        int opcaoFuncionario = leitor.nextInt();
 
-                        if (usuario == null) {
+                        if (opcaoFuncionario == 0) {
                             voltarTelaOpcaoUsuario = true;
-                        }
-
-                        break;
-                    case 2:
-                        // Se for um funcionario
-                        boolean voltarTelaOpcaoGestor = false;
-
-                        do {
-                            mostrarOpcoesGestor();
-                            voltarTelaOpcaoGestor = false;
-                            int opcaoFuncionario = leitor.nextInt();
-
-                            if (opcaoFuncionario == 0) {
-                                voltarTelaOpcaoUsuario = true;
-                            } else {
-                                switch (opcaoFuncionario) {
-                                    case 1:
-                                        // Se for realizar login
-                                        usuario = realizarLoginFuncionario();
-                                        break;
-                                    case 2:
-                                        // Se for realizar cadastro
-                                        usuario = realizarCadastroFuncionario();
-                                        break;
-                                }
-                                if (usuario == null) {
+                        } else {
+                            switch (opcaoFuncionario) {
+                                case 1:
+                                    usuario = realizarLoginFuncionario();
+                                    break;
+                                case 2:
+                                    usuario = realizarCadastroFuncionario();
+                                    break;
+                                default:
+                                    System.out.println(VERMELHO + "Opção inválida." + RESET);
                                     voltarTelaOpcaoGestor = true;
-                                }
+                                    break;
                             }
-                        } while (voltarTelaOpcaoGestor);
-
-                        break;
-                    default:
-                        System.out.println(VERMELHO + "Dígito inválido" + RESET);
-                        break;
-                }
-            } while (opcao != 1 && opcao != 2);
-        } while (voltarTelaOpcaoUsuario);
+                            if (usuario == null && opcaoFuncionario != 0) {
+                                voltarTelaOpcaoGestor = true;
+                            }
+                        }
+                    } while (voltarTelaOpcaoGestor);
+                    break;
+                default:
+                    System.out.println(VERMELHO + "Dígito inválido" + RESET);
+                    voltarTelaOpcaoUsuario = true;
+                    break;
+            }
+        } while (voltarTelaOpcaoUsuario || (opcao != 0 && usuario == null));
 
         return usuario;
-
     }
 
     /**
@@ -450,19 +453,19 @@ public class MenuManager {
             System.out.println("\n");
             System.out.println(AZUL + "  =====================================================================================");
             System.out.println(BOLD + "  ObservaAção" + RESET + AZUL + "                                              Transformando Maringá juntos");
-            // Mostrar o CPF com os pontos
-            System.out.println("  CPF: " + cidadao.getCpfFormatado() + "                                     Para trocar de conta, digite 0");
+            System.out.println("  CPF: " + cidadao.getCpfFormatado());
             System.out.println("  -------------------------------------------------------------------------------------" + RESET);
             System.out.println("\n");
             System.out.println(BOLD + "                        Escolha a opção que deseja realizar:\n" + RESET);
             System.out.println("                          1 - Registrar uma ocorrência");
             System.out.println("                          2 - Listar suas ocorrências");
             System.out.println("                          3 - Buscar uma ocorrência sua");
-            System.out.println("                          4 - Sair");
+            System.out.println("                          4 - Sair (Voltar ao menu inicial)");
             System.out.print("                            Opção: ");
+
             do {
                 opcaoLoop = leitor.nextInt();
-            } while (opcaoLoop > 4 || opcaoLoop < 0);
+            } while (opcaoLoop > 4 || opcaoLoop < 1);
 
             switch (opcaoLoop) {
                 case 1:
@@ -480,15 +483,14 @@ public class MenuManager {
                     } else {
                         mostrarSolicitacaoBuscada(cidadao, protocoloBusca);
                     }
-
                     break;
                 case 4:
-                    System.out.println(BOLD + "\n                       Obrigado por utilizar o nosso sistema!" + RESET);
-                    break;
+                    System.out.println(BOLD + "\n                       Deslogando..." + RESET);
+                    return 0;
             }
 
-        } while (opcaoLoop != 4 && opcaoLoop != 0 || voltarLoopCidadao);
-        return opcaoLoop;
+        } while (voltarLoopCidadao || opcaoLoop != 4);
+        return 0;
     }
 
     /**
@@ -503,16 +505,27 @@ public class MenuManager {
         System.out.println("  E-mail: " + gestor.getEmail());
         System.out.println("  -------------------------------------------------------------------------------------" + RESET);
         System.out.println("");
-        System.out.println(BOLD + "                                    Solicitações:\n" + RESET);
-        // Esse é o modelo das solicitações, não será travado assim, apenas para demonstração
-        System.out.println(AZUL + "     -------------------------------------------------------------------------------" + RESET);
-        System.out.println("       N° 1234         Poste sem luz na Av. Teste                       12/01/2021");
-        System.out.println("         Iluminação");
-        System.out.println("         Endereço: Avenida Teste, 1234");
-        System.out.println("         Status: Em Aberto");
-        System.out.println("         Atualizado: 12/01/2026");
-        System.out.println("         Assinatura: Fulano");
-        System.out.println(AZUL + "     -------------------------------------------------------------------------------" + RESET);
+        System.out.println(BOLD + "                                    Solicitações Abertas:\n" + RESET);
+
+        // Buscando todos os tickets do sistema
+        List<Ticket> todosChamados = ticketRepository.buscarTodos();
+
+        if (todosChamados.isEmpty()) {
+            System.out.println(VERMELHO + "                   Nenhuma solicitação registrada no sistema ainda." + RESET);
+        } else {
+            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            for (Ticket t : todosChamados) {
+                System.out.println(AZUL + "     -------------------------------------------------------------------------------" + RESET);
+                System.out.println("       N° " + t.getProtocolo() + "         " + t.getTitulo() + "                       " + t.getDataCriacao().format(formatador));
+                System.out.println("         Categoria: " + t.getCategoria());
+                System.out.println("         Endereço: " + t.getLocalizacaoEndereco() + " - " + t.getBairro());
+                System.out.println("         Status: " + t.getStatus());
+                System.out.println("         Prazo de Resolução: " + t.getPrazoSLA().format(formatador));
+                System.out.println(AZUL + "     -------------------------------------------------------------------------------" + RESET);
+            }
+        }
+
         System.out.println("\n");
         System.out.print(ITALICO + "  Para voltar, digite 0" + RESET);
         int op;
@@ -525,7 +538,7 @@ public class MenuManager {
      * Menu da da atualização do status das solicitações
      * @param gestor
      */
-    public boolean mostrarAtualizacaoStatus(Gestor gestor) {
+    public boolean mostrarAtualizacaoStatus(Gestor gestor, Ticket ticket) {
         boolean voltarMenuAtualizacaoStatus = false;
 
         do {
@@ -538,13 +551,14 @@ public class MenuManager {
             System.out.println("  E-mail: " + gestor.getEmail());
             System.out.println("  -------------------------------------------------------------------------------------" + RESET);
             System.out.println("");
-            System.out.println(BOLD + "                                    Atualização:\n" + RESET);
-            // Status provisórios
-            System.out.println("                          1 - Em aberto");
-            System.out.println("                          2 - Emcaminhado ao setor");
-            System.out.println("                          3 - Aprovado");
-            System.out.println("                          4 - Negado");
-            System.out.println("                          5 - Realizado");
+            System.out.println(BOLD + "                               Atualização da Solicitação N° " + ticket.getProtocolo() + "\n" + RESET);
+            System.out.println("                          Status Atual: " + ticket.getStatus() + "\n");
+
+            System.out.println("                          1 - Aberto");
+            System.out.println("                          2 - Triagem");
+            System.out.println("                          3 - Em andamento");
+            System.out.println("                          4 - Resolvido");
+            System.out.println("                          5 - Fechado");
             System.out.println("                          0 - Voltar");
             System.out.print("                            Opção: ");
 
@@ -556,11 +570,20 @@ public class MenuManager {
                 return false;
             }
 
-            System.out.print("\n   Justificativa ao solicitante (0 para voltar):");
-            String justificativa = leitor.next();
+            leitor.nextLine();
+
+            System.out.print("\n   Justificativa ao solicitante (0 para voltar): ");
+            String justificativa = leitor.nextLine();
 
             if (VerificaInputVoltar.verificarStringIgualAZero(justificativa)) {
                 voltarMenuAtualizacaoStatus = true;
+            } else {
+                ticket.setStatus(StatusTicket.fromId(opcaoLoop));
+
+                System.out.println(VERDE + "\n   Status atualizado com sucesso!" + RESET);
+                System.out.print(ITALICO + "\n   Digite 0 para voltar: " + RESET);
+                while (leitor.nextInt() != 0);
+                return false;
             }
 
         } while (voltarMenuAtualizacaoStatus);
@@ -581,18 +604,18 @@ public class MenuManager {
             System.out.println("\n");
             System.out.println(AZUL + "  =====================================================================================");
             System.out.println(BOLD + "  ObservaAção" + RESET + AZUL + "                                              Transformando Maringá juntos");
-            System.out.println("  E-mail: " + gestor.getEmail() + "                                        Para trocar de conta, digite 0");
+            System.out.println("  E-mail: " + gestor.getEmail());
             System.out.println("  -------------------------------------------------------------------------------------" + RESET);
             System.out.println("\n");
             System.out.println(BOLD + "                        Escolha a opção que deseja realizar:\n" + RESET);
             System.out.println("                          1 - Listar solicitações");
             System.out.println("                          2 - Atualizar solicitação");
-            System.out.println("                          3 - Sair");
+            System.out.println("                          3 - Sair (Voltar ao menu inicial)");
             System.out.print("                            Opção: ");
 
             do {
                 opcaoLoop = leitor.nextInt();
-            } while (opcaoLoop > 3 || opcaoLoop < 0);
+            } while (opcaoLoop > 3 || opcaoLoop < 1);
 
             switch (opcaoLoop) {
                 case 1:
@@ -605,27 +628,31 @@ public class MenuManager {
                         voltarMenuBuscaProtocolo = false;
                         mostrarBuscaProtocolo();
                         Long protocoloBusca = leitor.nextLong();
-                        
+
                         if (protocoloBusca == 0) {
                             voltarLoopFuncionario = true;
                         }  else {
-                            // Validar existencia da solicitação
-                            boolean resultadoAtualizacao = mostrarAtualizacaoStatus(gestor);
+                            Ticket ticketEncontrado = ticketRepository.buscarPorProtocolo(protocoloBusca);
 
-                            if (!resultadoAtualizacao) {
+                            if (ticketEncontrado == null) {
+                                System.out.println(VERMELHO + "\n   Protocolo não encontrado no sistema!" + RESET);
                                 voltarMenuBuscaProtocolo = true;
-                            }
+                            } else {
+                                boolean resultadoAtualizacao = mostrarAtualizacaoStatus(gestor, ticketEncontrado);
 
+                                if (!resultadoAtualizacao) {
+                                    voltarMenuBuscaProtocolo = true;
+                                }
+                            }
                         }
                     } while (voltarMenuBuscaProtocolo);
-
                     break;
                 case 3:
-                    System.out.println(BOLD + "\n                       Obrigado por utilizar o nosso sistema!" + RESET);
-                    break;
+                    System.out.println(BOLD + "\n                       Deslogando..." + RESET);
+                    return 0;
             }
 
-        } while (opcaoLoop != 3 && opcaoLoop != 0 || voltarLoopFuncionario);
-        return opcaoLoop;
+        } while (voltarLoopFuncionario || opcaoLoop != 3);
+        return 0;
     }
 }
