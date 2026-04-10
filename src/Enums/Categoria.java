@@ -2,8 +2,8 @@ package Enums;
 
 public enum Categoria {
     ILUMINACAO(1),
-    BURACO(2),
-    LIMPEZA(3),
+    ASFALTO(2),
+    GRAMA(3),
     PONTO_DE_ONIBUS(4),
     OUTRO(5);
 

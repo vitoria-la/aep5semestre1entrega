@@ -620,7 +620,7 @@ public class MenuManager {
             System.out.println("  E-mail: " + gestor.getEmail());
             System.out.println("  -------------------------------------------------------------------------------------" + RESET);
             System.out.println("");
-            System.out.println(BOLD + "                               Atualização da Solicitação N° " + ticket.getProtocolo() + "\n" + RESET);
+            System.out.println(BOLD + "                         Atualização da Solicitação N° " + ticket.getProtocolo() + "\n" + RESET);
             System.out.println("                          Status Atual: " + ticket.getStatus() + "\n");
 
             System.out.println("                          1 - Aberto");
