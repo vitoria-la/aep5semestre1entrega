@@ -11,6 +11,7 @@ import Repositories.Interfaces.ITicketRepository;
 import Repositories.TicketRepository;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -498,40 +499,108 @@ public class MenuManager {
      * @param gestor
      */
     public void mostrarSolicitacoesFuncionario(Gestor gestor) {
-        limparConsole();
-        System.out.println("\n");
-        System.out.println(AZUL + "  =====================================================================================");
-        System.out.println(BOLD + "  ObservaAção" + RESET + AZUL + "                                              Transformando Maringá juntos");
-        System.out.println("  E-mail: " + gestor.getEmail());
-        System.out.println("  -------------------------------------------------------------------------------------" + RESET);
-        System.out.println("");
-        System.out.println(BOLD + "                                    Solicitações Abertas:\n" + RESET);
+        boolean voltar = false;
 
-        // Buscando todos os tickets do sistema
-        List<Ticket> todosChamados = ticketRepository.buscarTodos();
-
-        if (todosChamados.isEmpty()) {
-            System.out.println(VERMELHO + "                   Nenhuma solicitação registrada no sistema ainda." + RESET);
-        } else {
-            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-            for (Ticket t : todosChamados) {
-                System.out.println(AZUL + "     -------------------------------------------------------------------------------" + RESET);
-                System.out.println("       N° " + t.getProtocolo() + "         " + t.getTitulo() + "                       " + t.getDataCriacao().format(formatador));
-                System.out.println("         Categoria: " + t.getCategoria());
-                System.out.println("         Endereço: " + t.getLocalizacaoEndereco() + " - " + t.getBairro());
-                System.out.println("         Status: " + t.getStatus());
-                System.out.println("         Prazo de Resolução: " + t.getPrazoSLA().format(formatador));
-                System.out.println(AZUL + "     -------------------------------------------------------------------------------" + RESET);
-            }
-        }
-
-        System.out.println("\n");
-        System.out.print(ITALICO + "  Para voltar, digite 0" + RESET);
-        int op;
         do {
-            op = leitor.nextInt();
-        } while (op != 0);
+            limparConsole();
+            System.out.println("\n");
+            System.out.println(AZUL + "  =====================================================================================");
+            System.out.println(BOLD + "  ObservaAção" + RESET + AZUL + "                                              Transformando Maringá juntos");
+            System.out.println("  E-mail: " + gestor.getEmail());
+            System.out.println("  -------------------------------------------------------------------------------------" + RESET);
+            System.out.println("\n");
+            System.out.println(BOLD + "                                    Filtros de Busca:\n" + RESET);
+            System.out.println("                          1 - Listar todas");
+            System.out.println("                          2 - Filtrar por Prioridade");
+            System.out.println("                          3 - Filtrar por Categoria");
+            System.out.println("                          4 - Filtrar por Bairro");
+            System.out.println("                          0 - Voltar ao menu anterior");
+            System.out.print("                            Opção: ");
+
+            int opcaoFiltro = leitor.nextInt();
+
+            if (opcaoFiltro == 0) {
+                return; // Encerra o método e volta pro loop do Funcionario
+            }
+
+            leitor.nextLine();
+
+            List<Ticket> todosChamados = ticketRepository.buscarTodos();
+            List<Ticket> chamadosFiltrados = new ArrayList<>();
+
+            // Aplicando os filtros
+            if (opcaoFiltro == 1) {
+                chamadosFiltrados.addAll(todosChamados);
+
+            } else if (opcaoFiltro == 2) {
+                System.out.println(BOLD + "\n                       Escolha a prioridade:" + RESET);
+                System.out.println("                          1 - Baixa\n                          2 - Normal\n                          3 - Alta\n                          4 - Urgente");
+                System.out.print("                          Opção: ");
+                int opPrioridade = leitor.nextInt();
+                Prioridade pBusca = Prioridade.fromId(opPrioridade);
+
+                for (Ticket t : todosChamados) {
+                    if (t.getPrioridade() == pBusca) {
+                        chamadosFiltrados.add(t);
+                    }
+                }
+
+            } else if (opcaoFiltro == 3) {
+                System.out.println(BOLD + "\n                       Escolha a categoria:" + RESET);
+                System.out.println("                          1 - Iluminação\n                          2 - Buraco/Asfalto\n                          3 - Limpeza/Grama\n                          4 - Pontos de ônibus\n                          5 - Outro");
+                System.out.print("                          Opção: ");
+                int opCategoria = leitor.nextInt();
+                Categoria cBusca = Categoria.fromId(opCategoria);
+
+                for (Ticket t : todosChamados) {
+                    if (t.getCategoria() == cBusca) {
+                        chamadosFiltrados.add(t);
+                    }
+                }
+
+            } else if (opcaoFiltro == 4) {
+                System.out.print("\n                       Digite o nome do Bairro: ");
+                String bairroBusca = leitor.nextLine().trim().toLowerCase();
+
+                for (Ticket t : todosChamados) {
+                    if (t.getBairro().toLowerCase().contains(bairroBusca)) {
+                        chamadosFiltrados.add(t);
+                    }
+                }
+
+            } else {
+                System.out.println(VERMELHO + "                   Opção inválida!" + RESET);
+                continue;
+            }
+
+            // TELA DE EXIBIÇÃO DOS RESULTADOS
+            limparConsole();
+            System.out.println("\n");
+            System.out.println(AZUL + "  =====================================================================================" + RESET);
+            System.out.println(BOLD + "                                    Resultados da Busca:\n" + RESET);
+
+            if (chamadosFiltrados.isEmpty()) {
+                System.out.println(VERMELHO + "                   Nenhuma solicitação encontrada com este filtro." + RESET);
+            } else {
+                DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                for (Ticket t : chamadosFiltrados) {
+                    System.out.println(AZUL + "     -------------------------------------------------------------------------------" + RESET);
+                    System.out.println("       N° " + t.getProtocolo() + "         " + t.getTitulo() + "                       " + t.getDataCriacao().format(formatador));
+                    System.out.println("         Categoria: " + t.getCategoria() + " | Prioridade: " + t.getPrioridade());
+                    System.out.println("         Endereço: " + t.getLocalizacaoEndereco() + " - " + t.getBairro());
+                    System.out.println("         Status: " + t.getStatus());
+                    System.out.println("         Prazo de Resolução: " + t.getPrazoSLA().format(formatador));
+                    System.out.println(AZUL + "     -------------------------------------------------------------------------------" + RESET);
+                }
+            }
+
+            System.out.println("\n");
+            System.out.print(ITALICO + "  Para voltar, digite 0: " + RESET);
+
+            while (leitor.nextInt() != 0);
+
+        } while (true);
     }
 
     /**
